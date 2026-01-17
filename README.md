@@ -1,73 +1,186 @@
-# Welcome to your Lovable project
+# 🎨 Biocard.click
 
-## Project info
+> Plataforma de bio link moderna e elegante com integração Supabase
 
-**URL**: https://lovable.dev/projects/91f63bf6-3e02-46e1-90ab-5048da5a5094
+[![GitHub](https://img.shields.io/badge/GitHub-biocard.click-blue?logo=github)](https://github.com/gabpvieira/biocard.click)
+[![Supabase](https://img.shields.io/badge/Supabase-Integrated-green?logo=supabase)](https://supabase.com)
+[![React](https://img.shields.io/badge/React-18.3-blue?logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue?logo=typescript)](https://www.typescriptlang.org)
 
-## How can I edit this code?
+## 📖 Sobre
 
-There are several ways of editing your application.
+Biocard.click é uma plataforma completa para criar páginas de bio link personalizadas. Perfeita para profissionais, criadores de conteúdo e empresas que desejam centralizar seus links em uma landing page elegante.
 
-**Use Lovable**
+### ✨ Funcionalidades
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/91f63bf6-3e02-46e1-90ab-5048da5a5094) and start prompting.
+- 🎨 **Design Moderno**: Interface limpa e responsiva com Tailwind CSS
+- 🔐 **Autenticação Segura**: Sistema de login com Supabase Auth
+- 📝 **Editor Visual**: Crie e edite páginas facilmente
+- 🖼️ **Upload de Imagens**: Armazenamento seguro no Supabase Storage (até 10MB)
+- 🔗 **Links Ilimitados**: Adicione quantos cards/links precisar
+- 📱 **Totalmente Responsivo**: Funciona perfeitamente em todos os dispositivos
+- ⚡ **Performance**: Construído com Vite para velocidade máxima
+- 🎯 **SEO Friendly**: URLs amigáveis com slugs personalizados
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Tecnologias
 
-**Use your preferred IDE**
+- **Frontend**: React 18 + TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Backend**: Supabase (PostgreSQL + Auth + Storage)
+- **Build**: Vite
+- **Routing**: React Router v6
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 📦 Instalação
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Pré-requisitos
 
-Follow these steps:
+- Node.js 18+ 
+- npm ou yarn
+- Conta no Supabase
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Passo a Passo
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+1. **Clone o repositório**
+```bash
+git clone https://github.com/gabpvieira/biocard.click.git
+cd biocard.click
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+2. **Instale as dependências**
+```bash
+npm install
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. **Configure as variáveis de ambiente**
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
+VITE_SUPABASE_URL=sua-url-do-supabase
+VITE_SUPABASE_ANON_KEY=sua-chave-anon
+```
+
+> 📝 Consulte `SUPABASE_SETUP.md` para instruções detalhadas
+
+4. **Execute o projeto**
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Acesse: http://localhost:5173
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🗄️ Estrutura do Banco de Dados
 
-**Use GitHub Codespaces**
+### Tabelas
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **bio_pages**: Páginas de bio link
+- **page_cards**: Cards/links das páginas
+- **admins**: Administradores do sistema
 
-## What technologies are used for this project?
+### Storage
 
-This project is built with:
+- **bio-images**: Bucket para imagens (10MB max)
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Segurança
 
-## How can I deploy this project?
+- ✅ Row Level Security (RLS) habilitado
+- ✅ Políticas de acesso configuradas
+- ✅ Leitura pública, escrita apenas para admins
 
-Simply open [Lovable](https://lovable.dev/projects/91f63bf6-3e02-46e1-90ab-5048da5a5094) and click on Share -> Publish.
+## 📚 Documentação
 
-## Can I connect a custom domain to my Lovable project?
+- [SUPABASE_SETUP.md](SUPABASE_SETUP.md) - Guia de configuração do Supabase
+- [INTEGRACAO_COMPLETA.md](INTEGRACAO_COMPLETA.md) - Documentação técnica completa
+- [CHECKLIST.md](CHECKLIST.md) - Checklist de configuração
+- [supabase-setup.sql](supabase-setup.sql) - Script SQL de verificação
 
-Yes, you can!
+## 🔐 Primeiro Acesso
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Criar Administrador
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+1. Crie um usuário no Supabase Auth (Dashboard → Authentication → Users)
+2. Execute no SQL Editor:
+
+```sql
+INSERT INTO admins (id, email)
+SELECT id, email
+FROM auth.users
+WHERE email = 'seu@email.com';
+```
+
+3. Acesse `/admin` e faça login
+
+## 🛠️ Scripts Disponíveis
+
+```bash
+npm run dev          # Inicia servidor de desenvolvimento
+npm run build        # Build para produção
+npm run preview      # Preview do build
+npm run lint         # Executa o linter
+```
+
+## 📁 Estrutura do Projeto
+
+```
+biocard.click/
+├── src/
+│   ├── components/     # Componentes UI (shadcn/ui)
+│   ├── contexts/       # Contextos React (Auth)
+│   ├── lib/           # Utilitários e configurações
+│   │   ├── supabase.ts        # Cliente Supabase
+│   │   ├── supabaseStorage.ts # Funções CRUD
+│   │   └── ...
+│   ├── pages/         # Páginas da aplicação
+│   └── types/         # Tipos TypeScript
+├── public/            # Assets estáticos
+└── ...
+```
+
+## 🎨 Páginas
+
+- `/` - Página inicial (em branco)
+- `/:slug` - Página pública de bio link
+- `/admin` - Login administrativo
+- `/admin/dashboard` - Dashboard de gerenciamento
+- `/admin/editor` - Editor de páginas
+- `/admin/editor/:slug` - Editar página existente
+
+## 🔒 Segurança
+
+- Autenticação via Supabase Auth
+- Row Level Security (RLS) em todas as tabelas
+- Validação de dados no frontend e backend
+- Upload de imagens com limite de tamanho e tipo
+- Variáveis de ambiente não commitadas
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Sinta-se à vontade para:
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
+3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
+4. Push para a branch (`git push origin feature/MinhaFeature`)
+5. Abra um Pull Request
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 👤 Autor
+
+**Gabriel Vieira**
+- GitHub: [@gabpvieira](https://github.com/gabpvieira)
+
+## 🙏 Agradecimentos
+
+- [Supabase](https://supabase.com) - Backend as a Service
+- [shadcn/ui](https://ui.shadcn.com) - Componentes UI
+- [Tailwind CSS](https://tailwindcss.com) - Framework CSS
+- [Vite](https://vitejs.dev) - Build tool
+
+---
+
+⭐ Se este projeto foi útil, considere dar uma estrela!
+
+**Status:** ✅ Em desenvolvimento ativo
