@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Supabase MCP Configuration",
+  "description": "Configure the Supabase project ID (eoxlbkdsilnaxqpmuqfb) for MCP requests in the application configuration files",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Configure the Supabase project ID 'eoxlbkdsilnaxqpmuqfb' for MCP (Model Context Protocol) requests. Check for environment configuration files (.env, .env.local, etc.) or configuration files where Supabase settings should be stored. If no configuration file exists, create one with the appropriate Supabase project ID and URL settings. Ensure the configuration follows best practices for this React/TypeScript project."
+  }
+}
