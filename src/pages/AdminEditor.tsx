@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { storage } from "@/lib/storage";
-import { BioPage, PageCard, HeaderLayout, CoverType } from "@/types/page";
+import { BioPage, PageCard, HeaderLayout, CoverType, TagWithIcon } from "@/types/page";
 import { validatePage, sanitizeSlug, ValidationError } from "@/lib/validation";
 import { validateImage, convertToBase64, generateId } from "@/lib/imageUtils";
 import { HeaderLayoutPreview } from "@/components/HeaderLayoutPreview";
+import { IconPicker, getIconComponent } from "@/components/IconPicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,6 +49,8 @@ const AdminEditor = () => {
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [showIconPicker, setShowIconPicker] = useState(false);
+  const [editingTagIndex, setEditingTagIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -562,18 +565,22 @@ const AdminEditor = () => {
               <div className="space-y-2">
                 <div className="flex gap-2">
                   <Input
-                    placeholder="Adicionar tag (ex: Criador de Conteúdo)"
+                    placeholder="Adicionar tag (ex: Barbeiro Profissional)"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
                         const input = e.currentTarget;
                         const value = input.value.trim();
                         if (value && (formData.headerConfig?.tags.length || 0) < 5) {
+                          const newTag: TagWithIcon = {
+                            text: value,
+                            icon: 'sparkles', // ícone padrão
+                          };
                           setFormData((prev) => ({
                             ...prev,
                             headerConfig: {
                               ...prev.headerConfig!,
-                              tags: [...(prev.headerConfig?.tags || []), value],
+                              tags: [...(prev.headerConfig?.tags || []), newTag],
                             },
                           }));
                           input.value = '';
@@ -584,31 +591,45 @@ const AdminEditor = () => {
                   />
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {formData.headerConfig?.tags.map((tag, i) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1 bg-accent/20 text-accent text-sm rounded-full flex items-center gap-2"
-                    >
-                      {tag}
-                      <button
-                        onClick={() =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            headerConfig: {
-                              ...prev.headerConfig!,
-                              tags: prev.headerConfig!.tags.filter((_, idx) => idx !== i),
-                            },
-                          }))
-                        }
-                        className="hover:text-destructive"
+                  {formData.headerConfig?.tags.map((tag, i) => {
+                    const IconComponent = getIconComponent(tag.icon);
+                    return (
+                      <span
+                        key={i}
+                        className="px-3 py-1 bg-accent/20 text-accent text-sm rounded-full flex items-center gap-2"
                       >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </span>
-                  ))}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEditingTagIndex(i);
+                            setShowIconPicker(true);
+                          }}
+                          className="hover:scale-110 transition-transform"
+                          title="Mudar ícone"
+                        >
+                          <IconComponent className="w-3 h-3" />
+                        </button>
+                        {tag.text}
+                        <button
+                          onClick={() =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              headerConfig: {
+                                ...prev.headerConfig!,
+                                tags: prev.headerConfig!.tags.filter((_, idx) => idx !== i),
+                              },
+                            }))
+                          }
+                          className="hover:text-destructive"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    );
+                  })}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Pressione Enter para adicionar. Máximo 5 tags.
+                  Pressione Enter para adicionar. Clique no ícone para mudar. Máximo 5 tags.
                 </p>
               </div>
             </div>
@@ -810,6 +831,29 @@ const AdminEditor = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Icon Picker Modal */}
+      {showIconPicker && editingTagIndex !== null && (
+        <IconPicker
+          selectedIcon={formData.headerConfig?.tags[editingTagIndex]?.icon || 'sparkles'}
+          onSelect={(iconName) => {
+            setFormData((prev) => ({
+              ...prev,
+              headerConfig: {
+                ...prev.headerConfig!,
+                tags: prev.headerConfig!.tags.map((tag, idx) =>
+                  idx === editingTagIndex ? { ...tag, icon: iconName } : tag
+                ),
+              },
+            }));
+            setEditingTagIndex(null);
+          }}
+          onClose={() => {
+            setShowIconPicker(false);
+            setEditingTagIndex(null);
+          }}
+        />
       )}
     </div>
   );

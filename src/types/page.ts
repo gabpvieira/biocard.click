@@ -7,12 +7,17 @@ export interface PageCard {
 export type HeaderLayout = 'clean' | 'bold' | 'minimal';
 export type CoverType = 'image' | 'solid' | 'pattern';
 
+export interface TagWithIcon {
+  text: string;
+  icon: string;
+}
+
 export interface HeaderConfig {
   layout: HeaderLayout;
   coverType: CoverType;
   coverImage?: string;
   coverColor: string;
-  tags: string[];
+  tags: TagWithIcon[];
   showActions: boolean;
 }
 

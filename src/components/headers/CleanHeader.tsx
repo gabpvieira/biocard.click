@@ -1,6 +1,7 @@
 import { HeaderConfig } from "@/types/page";
 import { Copy, Share2, Mail } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { getIconComponent } from "@/components/IconPicker";
 
 interface CleanHeaderProps {
   name: string;
@@ -83,14 +84,18 @@ export const CleanHeader = ({
           {/* Tags - pills pequenas */}
           {config.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 justify-center mb-4">
-              {config.tags.slice(0, 3).map((tag, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-1 text-xs text-purple-300 border border-purple-500/30 rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
+              {config.tags.slice(0, 3).map((tag, i) => {
+                const IconComponent = getIconComponent(tag.icon);
+                return (
+                  <span
+                    key={i}
+                    className="px-3 py-1 text-xs text-purple-300 border border-purple-500/30 rounded-full flex items-center gap-1.5"
+                  >
+                    <IconComponent className="w-3 h-3" />
+                    {tag.text}
+                  </span>
+                );
+              })}
             </div>
           )}
 

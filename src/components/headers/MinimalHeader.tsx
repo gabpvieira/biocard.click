@@ -1,6 +1,7 @@
 import { HeaderConfig } from "@/types/page";
 import { Copy, Share2, Mail } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { getIconComponent } from "@/components/IconPicker";
 
 interface MinimalHeaderProps {
   name: string;
@@ -61,8 +62,17 @@ export const MinimalHeader = ({
 
           {/* Tags - inline com separadores */}
           {config.tags.length > 0 && (
-            <div className="text-purple-400 text-xs font-mono">
-              {config.tags.join(' / ')}
+            <div className="text-purple-400 text-xs font-mono flex items-center gap-2">
+              {config.tags.map((tag, i) => {
+                const IconComponent = getIconComponent(tag.icon);
+                return (
+                  <span key={i} className="flex items-center gap-1">
+                    <IconComponent className="w-3 h-3" />
+                    {tag.text}
+                    {i < config.tags.length - 1 && <span className="text-zinc-600 mx-1">/</span>}
+                  </span>
+                );
+              })}
             </div>
           )}
         </div>
