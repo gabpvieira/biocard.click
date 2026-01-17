@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { storage, initializeDefaultPage } from "@/lib/storage";
+import { storage } from "@/lib/storage";
 import { BioPage } from "@/types/page";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,7 +38,6 @@ const AdminDashboard = () => {
       return;
     }
 
-    initializeDefaultPage();
     loadPages();
   }, [isAuthenticated, navigate]);
 

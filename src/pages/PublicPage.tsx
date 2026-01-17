@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { storage, initializeDefaultPage } from "@/lib/storage";
+import { storage } from "@/lib/storage";
 import { BioPage } from "@/types/page";
 import { ChevronDown } from "lucide-react";
 
@@ -11,8 +11,6 @@ const PublicPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    initializeDefaultPage();
-    
     if (slug) {
       const pageData = storage.getPage(slug);
       if (pageData) {
