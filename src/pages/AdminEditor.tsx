@@ -190,6 +190,7 @@ const AdminEditor = () => {
       description: formData.description!,
       ctaText: formData.ctaText || "Conheça meus cursos ou entre em contato!",
       cards: formData.cards!,
+      headerConfig: formData.headerConfig!,
       createdAt: isEditing
         ? storage.getPage(editSlug!)?.createdAt || now
         : now,

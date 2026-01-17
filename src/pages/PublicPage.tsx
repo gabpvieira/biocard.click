@@ -45,7 +45,7 @@ const PublicPage = () => {
 
       <main className="w-full max-w-md mx-auto relative z-10">
         {/* Header dinâmico baseado no layout escolhido */}
-        {page.headerConfig.layout === 'clean' && (
+        {page.headerConfig?.layout === 'clean' && (
           <CleanHeader
             name={page.name}
             photo={page.photo}
@@ -54,16 +54,22 @@ const PublicPage = () => {
             config={page.headerConfig}
           />
         )}
-        {page.headerConfig.layout === 'bold' && (
+        {(!page.headerConfig || page.headerConfig.layout === 'bold') && (
           <BoldHeader
             name={page.name}
             photo={page.photo}
             description={page.description}
             ctaText={page.ctaText}
-            config={page.headerConfig}
+            config={page.headerConfig || {
+              layout: 'bold',
+              coverType: 'solid',
+              coverColor: '#1a1a1a',
+              tags: [],
+              showActions: true,
+            }}
           />
         )}
-        {page.headerConfig.layout === 'minimal' && (
+        {page.headerConfig?.layout === 'minimal' && (
           <MinimalHeader
             name={page.name}
             photo={page.photo}
