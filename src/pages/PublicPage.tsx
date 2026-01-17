@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { storage } from "@/lib/storage";
+import { supabaseStorage } from "@/lib/supabaseStorage";
 import { BioPage } from "@/types/page";
 import { CleanHeader, BoldHeader, MinimalHeader } from "@/components/headers";
 import { ChevronDown } from "lucide-react";
@@ -12,15 +12,19 @@ const PublicPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (slug) {
-      const pageData = storage.getPage(slug);
-      if (pageData) {
-        setPage(pageData);
-      } else {
-        navigate("/404");
+    const loadPage = async () => {
+      if (slug) {
+        const pageData = await supabaseStorage.getPage(slug);
+        if (pageData) {
+          setPage(pageData);
+        } else {
+          navigate("/404");
+        }
       }
-    }
-    setIsLoading(false);
+      setIsLoading(false);
+    };
+    
+    loadPage();
   }, [slug, navigate]);
 
   if (isLoading) {

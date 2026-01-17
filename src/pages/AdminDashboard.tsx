@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { storage } from "@/lib/storage";
+import { supabaseStorage } from "@/lib/supabaseStorage";
 import { BioPage } from "@/types/page";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +29,7 @@ import {
 const AdminDashboard = () => {
   const [pages, setPages] = useState<BioPage[]>([]);
   const [deleteSlug, setDeleteSlug] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -41,18 +42,31 @@ const AdminDashboard = () => {
     loadPages();
   }, [isAuthenticated, navigate]);
 
-  const loadPages = () => {
-    setPages(storage.getAllPages());
+  const loadPages = async () => {
+    setIsLoading(true);
+    const allPages = await supabaseStorage.getAllPages();
+    setPages(allPages);
+    setIsLoading(false);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (deleteSlug) {
-      storage.deletePage(deleteSlug);
-      loadPages();
-      toast({
-        title: "Página excluída",
-        description: "A página foi removida com sucesso.",
-      });
+      const result = await supabaseStorage.deletePage(deleteSlug);
+      
+      if (result.success) {
+        await loadPages();
+        toast({
+          title: "Página excluída",
+          description: "A página foi removida com sucesso.",
+        });
+      } else {
+        toast({
+          title: "Erro ao excluir",
+          description: result.error || "Não foi possível excluir a página.",
+          variant: "destructive",
+        });
+      }
+      
       setDeleteSlug(null);
     }
   };
@@ -110,7 +124,12 @@ const AdminDashboard = () => {
         </div>
 
         {/* Pages List */}
-        {pages.length === 0 ? (
+        {isLoading ? (
+          <div className="bg-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-12 text-center">
+            <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-muted-foreground">Carregando páginas...</p>
+          </div>
+        ) : pages.length === 0 ? (
           <div className="bg-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-12 text-center">
             <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-foreground mb-2">

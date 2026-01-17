@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { storage } from "@/lib/storage";
+import { supabaseStorage } from "@/lib/supabaseStorage";
 import { BioPage, PageCard, HeaderLayout, CoverType, TagWithIcon } from "@/types/page";
 import { validatePage, sanitizeSlug, ValidationError } from "@/lib/validation";
 import { validateImage, convertToBase64, generateId } from "@/lib/imageUtils";
@@ -53,24 +53,28 @@ const AdminEditor = () => {
   const [editingTagIndex, setEditingTagIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/admin");
-      return;
-    }
-
-    if (isEditing && editSlug) {
-      const page = storage.getPage(editSlug);
-      if (page) {
-        setFormData(page);
-      } else {
-        toast({
-          title: "Erro",
-          description: "Página não encontrada",
-          variant: "destructive",
-        });
-        navigate("/admin/dashboard");
+    const loadPage = async () => {
+      if (!isAuthenticated) {
+        navigate("/admin");
+        return;
       }
-    }
+
+      if (isEditing && editSlug) {
+        const page = await supabaseStorage.getPage(editSlug);
+        if (page) {
+          setFormData(page);
+        } else {
+          toast({
+            title: "Erro",
+            description: "Página não encontrada",
+            variant: "destructive",
+          });
+          navigate("/admin/dashboard");
+        }
+      }
+    };
+    
+    loadPage();
   }, [isAuthenticated, isEditing, editSlug, navigate]);
 
   const handleSlugChange = (value: string) => {
@@ -183,7 +187,6 @@ const AdminEditor = () => {
     }
 
     setIsSaving(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
 
     const now = new Date().toISOString();
     const pageData: BioPage = {
@@ -194,24 +197,26 @@ const AdminEditor = () => {
       ctaText: formData.ctaText || "Conheça meus cursos ou entre em contato!",
       cards: formData.cards!,
       headerConfig: formData.headerConfig!,
-      createdAt: isEditing
-        ? storage.getPage(editSlug!)?.createdAt || now
-        : now,
+      createdAt: now,
       updatedAt: now,
     };
 
-    if (isEditing && editSlug !== formData.slug) {
-      storage.updatePageSlug(editSlug!, formData.slug!, pageData);
+    const result = await supabaseStorage.setPage(pageData);
+
+    if (result.success) {
+      toast({
+        title: isEditing ? "Página atualizada!" : "Página criada!",
+        description: "As alterações foram salvas com sucesso.",
+      });
+      navigate("/admin/dashboard");
     } else {
-      storage.setPage(pageData);
+      toast({
+        title: "Erro ao salvar",
+        description: result.error || "Não foi possível salvar a página.",
+        variant: "destructive",
+      });
     }
 
-    toast({
-      title: isEditing ? "Página atualizada!" : "Página criada!",
-      description: "As alterações foram salvas com sucesso.",
-    });
-
-    navigate("/admin/dashboard");
     setIsSaving(false);
   };
 
