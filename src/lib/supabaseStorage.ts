@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { BioPage, PageCard } from "@/types/page";
+import { BioPage, PageCard, HeaderConfig } from "@/types/page";
 
 export const supabaseStorage = {
   // Get all pages
@@ -24,6 +24,14 @@ export const supabaseStorage = {
       photo: page.photo || "",
       description: page.description || "",
       ctaText: page.cta_text || "",
+      headerConfig: {
+        layout: page.header_layout || 'bold',
+        coverType: page.header_cover_type || 'solid',
+        coverImage: page.header_cover_image,
+        coverColor: page.header_cover_color || '#1a1a1a',
+        tags: page.header_tags || [],
+        showActions: page.header_show_actions !== false,
+      },
       cards: (page.cards || [])
         .sort((a: any, b: any) => a.position - b.position)
         .map((card: any) => ({
@@ -59,6 +67,14 @@ export const supabaseStorage = {
       photo: page.photo || "",
       description: page.description || "",
       ctaText: page.cta_text || "",
+      headerConfig: {
+        layout: page.header_layout || 'bold',
+        coverType: page.header_cover_type || 'solid',
+        coverImage: page.header_cover_image,
+        coverColor: page.header_cover_color || '#1a1a1a',
+        tags: page.header_tags || [],
+        showActions: page.header_show_actions !== false,
+      },
       cards: (page.cards || [])
         .sort((a: any, b: any) => a.position - b.position)
         .map((card: any) => ({
@@ -99,6 +115,12 @@ export const supabaseStorage = {
         photo: page.photo,
         description: page.description,
         cta_text: page.ctaText,
+        header_layout: page.headerConfig.layout,
+        header_cover_type: page.headerConfig.coverType,
+        header_cover_image: page.headerConfig.coverImage,
+        header_cover_color: page.headerConfig.coverColor,
+        header_tags: page.headerConfig.tags,
+        header_show_actions: page.headerConfig.showActions,
       };
 
       let pageId: string;

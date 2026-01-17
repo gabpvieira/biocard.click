@@ -17,7 +17,22 @@ export const storage = {
 
   getPage: (slug: string): BioPage | null => {
     const data = localStorage.getItem(`${PAGE_PREFIX}${slug}`);
-    return data ? JSON.parse(data) : null;
+    if (!data) return null;
+    
+    const page = JSON.parse(data);
+    
+    // Garantir que headerConfig existe (migração de dados antigos)
+    if (!page.headerConfig) {
+      page.headerConfig = {
+        layout: 'bold',
+        coverType: 'solid',
+        coverColor: '#1a1a1a',
+        tags: [],
+        showActions: true,
+      };
+    }
+    
+    return page;
   },
 
   setPage: (page: BioPage): void => {

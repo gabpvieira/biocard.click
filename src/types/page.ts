@@ -4,6 +4,18 @@ export interface PageCard {
   link: string;
 }
 
+export type HeaderLayout = 'clean' | 'bold' | 'minimal';
+export type CoverType = 'image' | 'solid' | 'pattern';
+
+export interface HeaderConfig {
+  layout: HeaderLayout;
+  coverType: CoverType;
+  coverImage?: string;
+  coverColor: string;
+  tags: string[];
+  showActions: boolean;
+}
+
 export interface BioPage {
   id?: string;
   slug: string;
@@ -12,6 +24,7 @@ export interface BioPage {
   description: string;
   ctaText: string;
   cards: PageCard[];
+  headerConfig: HeaderConfig;
   createdAt: string;
   updatedAt: string;
 }

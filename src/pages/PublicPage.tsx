@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { storage } from "@/lib/storage";
 import { BioPage } from "@/types/page";
+import { CleanHeader, BoldHeader, MinimalHeader } from "@/components/headers";
 import { ChevronDown } from "lucide-react";
 
 const PublicPage = () => {
@@ -43,42 +44,34 @@ const PublicPage = () => {
       <div className="absolute bottom-1/3 right-0 w-56 h-56 bg-primary/15 rounded-full blur-[90px] translate-x-1/4"></div>
 
       <main className="w-full max-w-md mx-auto relative z-10">
-        {/* Profile Section */}
-        <section className="text-center mb-8 animate-fade-in">
-          <div className="relative inline-block mb-6">
-            <img
-              src={page.photo}
-              alt={page.name}
-              className="w-32 h-32 rounded-full object-cover profile-glow mx-auto"
-            />
-          </div>
-
-          <h1 className="text-2xl font-bold text-foreground mb-2">
-            {page.name}
-          </h1>
-
-          <p className="text-muted-foreground text-sm px-4 leading-relaxed mb-6">
-            {page.description}
-          </p>
-
-          {page.ctaText && (
-            <div className="flex flex-col items-center gap-2">
-              <p className="text-foreground text-lg font-bold text-center">
-                {page.ctaText.split("\n").map((line, i) => (
-                  <span key={i}>
-                    {line}
-                    {i < page.ctaText.split("\n").length - 1 && <br />}
-                  </span>
-                ))}
-              </p>
-              <ChevronDown
-                className="text-accent animate-pulse"
-                size={32}
-                strokeWidth={3}
-              />
-            </div>
-          )}
-        </section>
+        {/* Header dinâmico baseado no layout escolhido */}
+        {page.headerConfig.layout === 'clean' && (
+          <CleanHeader
+            name={page.name}
+            photo={page.photo}
+            description={page.description}
+            ctaText={page.ctaText}
+            config={page.headerConfig}
+          />
+        )}
+        {page.headerConfig.layout === 'bold' && (
+          <BoldHeader
+            name={page.name}
+            photo={page.photo}
+            description={page.description}
+            ctaText={page.ctaText}
+            config={page.headerConfig}
+          />
+        )}
+        {page.headerConfig.layout === 'minimal' && (
+          <MinimalHeader
+            name={page.name}
+            photo={page.photo}
+            description={page.description}
+            ctaText={page.ctaText}
+            config={page.headerConfig}
+          />
+        )}
 
         {/* Links Section */}
         <section

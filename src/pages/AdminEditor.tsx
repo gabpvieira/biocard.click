@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { storage } from "@/lib/storage";
-import { BioPage, PageCard } from "@/types/page";
+import { BioPage, PageCard, HeaderLayout, CoverType } from "@/types/page";
 import { validatePage, sanitizeSlug, ValidationError } from "@/lib/validation";
 import { validateImage, convertToBase64, generateId } from "@/lib/imageUtils";
+import { HeaderLayoutPreview } from "@/components/HeaderLayoutPreview";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,6 +20,7 @@ import {
   Upload,
   X,
   Loader2,
+  Palette,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
@@ -35,6 +37,13 @@ const AdminEditor = () => {
     description: "",
     ctaText: "Conheça meus cursos ou entre em contato!",
     cards: [],
+    headerConfig: {
+      layout: 'bold',
+      coverType: 'solid',
+      coverColor: '#1a1a1a',
+      tags: [],
+      showActions: true,
+    },
   });
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const [isSaving, setIsSaving] = useState(false);
@@ -381,6 +390,261 @@ const AdminEditor = () => {
                 placeholder="Ex: Conheça meus cursos!"
                 className="bg-background/50 border-border/50"
               />
+            </div>
+          </div>
+
+          {/* Header Layout Configuration */}
+          <div className="bg-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-6 space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Palette className="w-5 h-5 text-accent" />
+              <h2 className="font-semibold text-foreground">
+                Configuração do Header
+              </h2>
+            </div>
+
+            {/* Layout Selection */}
+            <div>
+              <Label className="text-foreground mb-3 block">Estilo do Header</Label>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {(['clean', 'bold', 'minimal'] as HeaderLayout[]).map((layout) => (
+                  <HeaderLayoutPreview
+                    key={layout}
+                    layout={layout}
+                    isSelected={formData.headerConfig?.layout === layout}
+                    onClick={() =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        headerConfig: { ...prev.headerConfig!, layout },
+                      }))
+                    }
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Cover Type */}
+            <div>
+              <Label className="text-foreground mb-3 block">Tipo de Capa</Label>
+              <div className="grid grid-cols-3 gap-3">
+                {(['solid', 'image', 'pattern'] as CoverType[]).map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        headerConfig: { ...prev.headerConfig!, coverType: type },
+                      }))
+                    }
+                    className={`p-3 rounded-lg border transition-all ${
+                      formData.headerConfig?.coverType === type
+                        ? 'border-accent bg-accent/10'
+                        : 'border-border/50 hover:border-accent/50'
+                    }`}
+                  >
+                    <div className="text-sm text-foreground capitalize">{type}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Cover Color (if solid) */}
+            {formData.headerConfig?.coverType === 'solid' && (
+              <div>
+                <Label className="text-foreground mb-2 block">Cor da Capa</Label>
+                <div className="flex gap-3">
+                  <Input
+                    type="color"
+                    value={formData.headerConfig?.coverColor || '#1a1a1a'}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        headerConfig: {
+                          ...prev.headerConfig!,
+                          coverColor: e.target.value,
+                        },
+                      }))
+                    }
+                    className="w-20 h-10 cursor-pointer"
+                  />
+                  <Input
+                    type="text"
+                    value={formData.headerConfig?.coverColor || '#1a1a1a'}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        headerConfig: {
+                          ...prev.headerConfig!,
+                          coverColor: e.target.value,
+                        },
+                      }))
+                    }
+                    placeholder="#1a1a1a"
+                    className="flex-1 bg-background/50 border-border/50"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Cover Image (if image) */}
+            {formData.headerConfig?.coverType === 'image' && (
+              <div>
+                <Label className="text-foreground mb-2 block">Imagem de Capa</Label>
+                {formData.headerConfig?.coverImage ? (
+                  <div className="relative inline-block">
+                    <img
+                      src={formData.headerConfig.coverImage}
+                      alt="Cover preview"
+                      className="h-24 w-auto rounded-lg object-cover"
+                    />
+                    <button
+                      onClick={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          headerConfig: {
+                            ...prev.headerConfig!,
+                            coverImage: undefined,
+                          },
+                        }))
+                      }
+                      className="absolute -top-2 -right-2 w-6 h-6 bg-destructive rounded-full flex items-center justify-center"
+                    >
+                      <X className="w-4 h-4 text-destructive-foreground" />
+                    </button>
+                  </div>
+                ) : (
+                  <label className="flex items-center gap-2 px-4 py-2 border border-dashed border-border/50 rounded-lg cursor-pointer hover:border-accent/50 transition-colors w-fit">
+                    <Upload className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
+                      Upload imagem de capa
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const error = validateImage(file);
+                        if (error) {
+                          toast({ title: "Erro", description: error, variant: "destructive" });
+                          return;
+                        }
+                        try {
+                          const base64 = await convertToBase64(file);
+                          setFormData((prev) => ({
+                            ...prev,
+                            headerConfig: {
+                              ...prev.headerConfig!,
+                              coverImage: base64,
+                            },
+                          }));
+                        } catch {
+                          toast({
+                            title: "Erro",
+                            description: "Falha ao processar imagem",
+                            variant: "destructive",
+                          });
+                        }
+                      }}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+              </div>
+            )}
+
+            {/* Tags */}
+            <div>
+              <Label className="text-foreground mb-2 block">
+                Tags de Destaque
+              </Label>
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Adicionar tag (ex: Criador de Conteúdo)"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const input = e.currentTarget;
+                        const value = input.value.trim();
+                        if (value && (formData.headerConfig?.tags.length || 0) < 5) {
+                          setFormData((prev) => ({
+                            ...prev,
+                            headerConfig: {
+                              ...prev.headerConfig!,
+                              tags: [...(prev.headerConfig?.tags || []), value],
+                            },
+                          }));
+                          input.value = '';
+                        }
+                      }
+                    }}
+                    className="bg-background/50 border-border/50"
+                  />
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {formData.headerConfig?.tags.map((tag, i) => (
+                    <span
+                      key={i}
+                      className="px-3 py-1 bg-accent/20 text-accent text-sm rounded-full flex items-center gap-2"
+                    >
+                      {tag}
+                      <button
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            headerConfig: {
+                              ...prev.headerConfig!,
+                              tags: prev.headerConfig!.tags.filter((_, idx) => idx !== i),
+                            },
+                          }))
+                        }
+                        className="hover:text-destructive"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Pressione Enter para adicionar. Máximo 5 tags.
+                </p>
+              </div>
+            </div>
+
+            {/* Show Actions Toggle */}
+            <div className="flex items-center justify-between">
+              <div>
+                <Label className="text-foreground">Mostrar Ações Rápidas</Label>
+                <p className="text-xs text-muted-foreground">
+                  Botões de copiar, compartilhar e contato
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    headerConfig: {
+                      ...prev.headerConfig!,
+                      showActions: !prev.headerConfig?.showActions,
+                    },
+                  }))
+                }
+                className={`relative w-12 h-6 rounded-full transition-colors ${
+                  formData.headerConfig?.showActions
+                    ? 'bg-accent'
+                    : 'bg-border/50'
+                }`}
+              >
+                <span
+                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                    formData.headerConfig?.showActions
+                      ? 'translate-x-6'
+                      : 'translate-x-0'
+                  }`}
+                />
+              </button>
             </div>
           </div>
 
