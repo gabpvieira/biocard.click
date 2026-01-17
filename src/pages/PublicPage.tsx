@@ -4,6 +4,7 @@ import { supabaseStorage } from "@/lib/supabaseStorage";
 import { BioPage } from "@/types/page";
 import { CleanHeader, BoldHeader, MinimalHeader } from "@/components/headers";
 import { ChevronDown } from "lucide-react";
+import { useMetaTags } from "@/hooks/useMetaTags";
 
 const PublicPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -26,6 +27,14 @@ const PublicPage = () => {
     
     loadPage();
   }, [slug, navigate]);
+
+  // Update meta tags dynamically based on page data
+  useMetaTags({
+    title: page ? `${page.name} | Biocard` : 'Biocard - Link na Bio Premium',
+    description: page?.description || 'Crie sua página de links premium com design sofisticado e personalizável.',
+    image: page?.photo,
+    url: page ? `${window.location.origin}/${page.slug}` : undefined,
+  });
 
   if (isLoading) {
     return (
