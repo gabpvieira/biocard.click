@@ -94,6 +94,7 @@ const PublicPage = () => {
             ctaText={page.ctaText}
             config={page.headerConfig}
             typography={typography}
+            colors={colors}
           />
         )}
         {(!page.headerConfig || page.headerConfig.layout === 'bold') && (
@@ -110,6 +111,7 @@ const PublicPage = () => {
               showActions: true,
             }}
             typography={typography}
+            colors={colors}
           />
         )}
         {page.headerConfig?.layout === 'minimal' && (
@@ -120,6 +122,7 @@ const PublicPage = () => {
             ctaText={page.ctaText}
             config={page.headerConfig}
             typography={typography}
+            colors={colors}
           />
         )}
 

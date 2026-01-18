@@ -1,4 +1,4 @@
-import { HeaderConfig, TypographyConfig } from "@/types/page";
+import { HeaderConfig, TypographyConfig, ThemeColors } from "@/types/page";
 import { Copy, Share2, Mail } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { getIconComponent } from "@/components/IconPicker";
@@ -11,6 +11,7 @@ interface CleanHeaderProps {
   ctaText?: string;
   config: HeaderConfig;
   typography?: TypographyConfig;
+  colors?: ThemeColors;
 }
 
 export const CleanHeader = ({
@@ -20,6 +21,7 @@ export const CleanHeader = ({
   ctaText,
   config,
   typography,
+  colors = { primary: '#a855f7', accent: '#c084fc', background: '#0a0a0a' },
 }: CleanHeaderProps) => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -70,7 +72,8 @@ export const CleanHeader = ({
             <img
               src={photo}
               alt={name}
-              className="w-[120px] h-[120px] rounded-full object-cover border-2 border-purple-500/50 shadow-xl"
+              className="w-[120px] h-[120px] rounded-full object-cover border-2 shadow-xl"
+              style={{ borderColor: `${colors.primary}80` }}
             />
           </div>
 
@@ -98,8 +101,17 @@ export const CleanHeader = ({
                 return (
                   <span
                     key={i}
-                    className="px-3 py-1 text-xs text-purple-300 border border-purple-500/30 rounded-full flex items-center gap-1.5"
-                    style={typography ? getFontStyle(typography.tags) : undefined}
+                    className="px-3 py-1 text-xs border rounded-full flex items-center gap-1.5"
+                    style={{
+                      color: colors.accent,
+                      borderColor: `${colors.primary}4D`,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = `${colors.primary}1A`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
                   >
                     <IconComponent className="w-3 h-3" />
                     {tag.text}
@@ -114,21 +126,48 @@ export const CleanHeader = ({
             <div className="flex gap-4 mb-6">
               <button
                 onClick={handleCopyLink}
-                className="p-2 text-zinc-400 hover:text-purple-400 transition-colors"
+                className="p-2 text-zinc-400 transition-colors"
+                style={{ 
+                  color: 'rgb(161, 161, 170)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = colors.primary;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgb(161, 161, 170)';
+                }}
                 aria-label="Copiar link"
               >
                 <Copy className="w-5 h-5" />
               </button>
               <button
                 onClick={handleShare}
-                className="p-2 text-zinc-400 hover:text-purple-400 transition-colors"
+                className="p-2 text-zinc-400 transition-colors"
+                style={{ 
+                  color: 'rgb(161, 161, 170)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = colors.primary;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgb(161, 161, 170)';
+                }}
                 aria-label="Compartilhar"
               >
                 <Share2 className="w-5 h-5" />
               </button>
               <a
                 href={`mailto:contato@${name.toLowerCase().replace(/\s+/g, '')}.com`}
-                className="p-2 text-zinc-400 hover:text-purple-400 transition-colors"
+                className="p-2 text-zinc-400 transition-colors"
+                style={{ 
+                  color: 'rgb(161, 161, 170)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = colors.primary;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgb(161, 161, 170)';
+                }}
                 aria-label="Contato"
               >
                 <Mail className="w-5 h-5" />

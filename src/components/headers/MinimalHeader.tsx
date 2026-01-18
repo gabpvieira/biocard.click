@@ -1,4 +1,4 @@
-import { HeaderConfig, TypographyConfig } from "@/types/page";
+import { HeaderConfig, TypographyConfig, ThemeColors } from "@/types/page";
 import { Copy, Share2, Mail } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { getIconComponent } from "@/components/IconPicker";
@@ -11,6 +11,7 @@ interface MinimalHeaderProps {
   ctaText?: string;
   config: HeaderConfig;
   typography?: TypographyConfig;
+  colors?: ThemeColors;
 }
 
 export const MinimalHeader = ({
@@ -20,6 +21,7 @@ export const MinimalHeader = ({
   ctaText,
   config,
   typography,
+  colors = { primary: '#a855f7', accent: '#c084fc', background: '#0a0a0a' },
 }: MinimalHeaderProps) => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -72,8 +74,11 @@ export const MinimalHeader = ({
           {/* Tags - inline com separadores */}
           {config.tags.length > 0 && (
             <div 
-              className="text-purple-400 text-xs font-mono flex items-center gap-2"
-              style={typography ? getFontStyle(typography.tags) : undefined}
+              className="text-xs font-mono flex items-center gap-2"
+              style={{ 
+                color: colors.primary,
+                ...typography ? getFontStyle(typography.tags) : {}
+              }}
             >
               {config.tags.map((tag, i) => {
                 const IconComponent = getIconComponent(tag.icon);
@@ -94,21 +99,42 @@ export const MinimalHeader = ({
           <div className="flex gap-3 shrink-0">
             <button
               onClick={handleCopyLink}
-              className="text-zinc-500 hover:text-purple-400 transition-colors"
+              className="text-zinc-500 transition-colors"
+              style={{ color: 'rgb(113, 113, 122)' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = colors.primary;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'rgb(113, 113, 122)';
+              }}
               aria-label="Copiar link"
             >
               <Copy className="w-4 h-4" />
             </button>
             <button
               onClick={handleShare}
-              className="text-zinc-500 hover:text-purple-400 transition-colors"
+              className="text-zinc-500 transition-colors"
+              style={{ color: 'rgb(113, 113, 122)' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = colors.primary;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'rgb(113, 113, 122)';
+              }}
               aria-label="Compartilhar"
             >
               <Share2 className="w-4 h-4" />
             </button>
             <a
               href={`mailto:contato@${name.toLowerCase().replace(/\s+/g, '')}.com`}
-              className="text-zinc-500 hover:text-purple-400 transition-colors"
+              className="text-zinc-500 transition-colors"
+              style={{ color: 'rgb(113, 113, 122)' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = colors.primary;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'rgb(113, 113, 122)';
+              }}
               aria-label="Contato"
             >
               <Mail className="w-4 h-4" />

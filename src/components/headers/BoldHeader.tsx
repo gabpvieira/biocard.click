@@ -1,4 +1,4 @@
-import { HeaderConfig, TypographyConfig } from "@/types/page";
+import { HeaderConfig, TypographyConfig, ThemeColors } from "@/types/page";
 import { Copy, Share2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { getIconComponent } from "@/components/IconPicker";
@@ -11,6 +11,7 @@ interface BoldHeaderProps {
   ctaText?: string;
   config: HeaderConfig;
   typography?: TypographyConfig;
+  colors?: ThemeColors;
 }
 
 export const BoldHeader = ({
@@ -20,6 +21,7 @@ export const BoldHeader = ({
   ctaText,
   config,
   typography,
+  colors = { primary: '#a855f7', accent: '#c084fc', background: '#0a0a0a' },
 }: BoldHeaderProps) => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -104,11 +106,15 @@ export const BoldHeader = ({
         <div className="flex flex-col items-center">
           {/* Avatar - grande com borda grossa e glow, sobrepondo a curvatura */}
           <div className="relative mb-4 shrink-0 z-10">
-            <div className="absolute inset-0 bg-purple-500/30 blur-xl rounded-full" />
+            <div 
+              className="absolute inset-0 blur-xl rounded-full" 
+              style={{ backgroundColor: `${colors.primary}4D` }}
+            />
             <img
               src={photo}
               alt={name}
-              className="relative w-[140px] h-[140px] rounded-full object-cover border-4 border-purple-500 shadow-2xl"
+              className="relative w-[140px] h-[140px] rounded-full object-cover border-4 shadow-2xl"
+              style={{ borderColor: colors.primary }}
             />
           </div>
 
@@ -119,7 +125,12 @@ export const BoldHeader = ({
               className="text-[36px] font-bold text-white mb-3 leading-tight"
               style={typography ? getFontStyle(typography.profileName) : undefined}
             >
-              <span className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
+              <span 
+                className="bg-clip-text text-transparent"
+                style={{ 
+                  backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` 
+                }}
+              >
                 {name}
               </span>
             </h1>
@@ -134,7 +145,7 @@ export const BoldHeader = ({
                 const keywords = ['profissional', 'especializado', 'expert', 'criador', 'empreendedor'];
                 const isKeyword = keywords.some(k => word.toLowerCase().includes(k));
                 return isKeyword ? (
-                  <span key={i} className="text-purple-400 font-medium">{word} </span>
+                  <span key={i} style={{ color: colors.primary }} className="font-medium">{word} </span>
                 ) : (
                   <span key={i}>{word} </span>
                 );
@@ -149,8 +160,18 @@ export const BoldHeader = ({
                   return (
                     <span
                       key={i}
-                      className="px-5 py-2.5 text-sm text-purple-200 bg-purple-500/20 backdrop-blur-sm rounded-full border border-purple-500/30 flex items-center gap-2 hover:bg-purple-500/30 transition-colors"
-                      style={typography ? getFontStyle(typography.tags) : undefined}
+                      className="px-5 py-2.5 text-sm backdrop-blur-sm rounded-full border flex items-center gap-2 transition-colors"
+                      style={{
+                        color: colors.accent,
+                        backgroundColor: `${colors.primary}33`,
+                        borderColor: `${colors.primary}4D`,
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = `${colors.primary}4D`;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = `${colors.primary}33`;
+                      }}
                     >
                       <IconComponent className="w-4 h-4" />
                       {tag.text}
