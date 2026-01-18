@@ -37,37 +37,26 @@ export const BoldHeader = ({
   };
 
   return (
-    <header className="relative mb-12 -mx-4 -mt-4 md:mx-0 md:mt-0 md:rounded-2xl overflow-hidden">
-      {/* Hero Banner - Full Bleed, Edge-to-Edge */}
+    <header className="relative mb-8 -mx-4 md:mx-0 md:rounded-2xl overflow-hidden">
+      {/* Hero Cover - full width, preenchendo todas as bordas */}
       <div 
-        className="relative h-[65vh] min-h-[500px] w-screen md:w-full -ml-4 md:ml-0"
+        className="h-[400px] w-[calc(100%+2rem)] md:w-full -mx-4 md:mx-0 relative overflow-hidden"
         style={{
           backgroundColor: config.coverType === 'solid' ? config.coverColor : undefined,
           backgroundImage: config.coverType === 'image' && config.coverImage 
-            ? `url(${config.coverImage})`
+            ? `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url(${config.coverImage})`
             : undefined,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
-        {/* Overlay Gradiente para Legibilidade */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to bottom, 
-              rgba(0,0,0,0.3) 0%, 
-              rgba(0,0,0,0.5) 50%, 
-              rgba(0,0,0,0.8) 100%)`
-          }}
-        />
-
-        {/* Padrão geométrico sutil (apenas para solid) */}
+        {/* Padrão geométrico sutil */}
         {config.coverType !== 'image' && (
           <div className="absolute inset-0 opacity-5">
             <svg width="100%" height="100%">
               <defs>
-                <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-                  <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" strokeWidth="1"/>
+                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1"/>
                 </pattern>
               </defs>
               <rect width="100%" height="100%" fill="url(#grid)" />
@@ -75,105 +64,95 @@ export const BoldHeader = ({
           </div>
         )}
 
-        {/* Glow de cor no topo */}
-        <div 
-          className="absolute top-0 left-0 right-0 h-64 opacity-30 blur-3xl"
-          style={{
-            background: `radial-gradient(ellipse at top, ${colors.primary}, transparent 70%)`
-          }}
-        />
-
         {/* Actions no canto superior direito */}
         {config.showActions && (
-          <div className="absolute top-6 right-6 flex gap-2 z-20">
+          <div className="absolute top-4 right-4 flex gap-2 z-10">
             <button
               onClick={handleCopyLink}
-              className="p-3 bg-black/50 backdrop-blur-md rounded-xl text-white hover:bg-black/70 transition-all shadow-lg"
+              className="p-2.5 bg-black/40 backdrop-blur-sm rounded-lg text-white hover:bg-black/60 transition-all"
               aria-label="Copiar link"
             >
-              <Copy className="w-5 h-5" />
+              <Copy className="w-4 h-4" />
             </button>
             <button
               onClick={handleShare}
-              className="p-3 bg-black/50 backdrop-blur-md rounded-xl text-white hover:bg-black/70 transition-all shadow-lg"
+              className="p-2.5 bg-black/40 backdrop-blur-sm rounded-lg text-white hover:bg-black/60 transition-all"
               aria-label="Compartilhar"
             >
-              <Share2 className="w-5 h-5" />
+              <Share2 className="w-4 h-4" />
             </button>
           </div>
         )}
 
-        {/* Content Container - Posicionado no centro/bottom do banner */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 pb-8">
-          <div className="flex flex-col items-center text-center max-w-2xl mx-auto">
-            {/* Avatar - Flutuando com glow forte */}
-            <div className="relative mb-6 shrink-0">
-              {/* Glow duplo para mais impacto */}
-              <div 
-                className="absolute inset-0 blur-2xl rounded-full animate-pulse"
-                style={{ backgroundColor: `${colors.primary}80` }}
-              />
-              <div 
-                className="absolute inset-0 blur-xl rounded-full"
-                style={{ backgroundColor: `${colors.primary}60` }}
-              />
-              <img
-                src={photo}
-                alt={name}
-                className="relative w-[160px] h-[160px] rounded-full object-cover border-4 shadow-2xl"
-                style={{ 
-                  borderColor: colors.primary,
-                  boxShadow: `0 20px 60px ${colors.primary}40`
-                }}
-              />
-            </div>
+        {/* Curvatura na parte inferior */}
+        <div className="absolute bottom-0 left-0 right-0 h-24">
+          <svg
+            viewBox="0 0 1440 120"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-full"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M0,64 C240,100 480,120 720,120 C960,120 1200,100 1440,64 L1440,120 L0,120 Z"
+              fill="#0a0a0a"
+            />
+          </svg>
+        </div>
+      </div>
 
-            {/* Name - Display grande e impactante */}
+      {/* Content Container */}
+      <div className="relative -mt-16 px-6">
+        <div className="flex flex-col items-center">
+          {/* Avatar - grande com borda grossa e glow, sobrepondo a curvatura */}
+          <div className="relative mb-4 shrink-0 z-10">
+            <div 
+              className="absolute inset-0 blur-xl rounded-full" 
+              style={{ backgroundColor: `${colors.primary}4D` }}
+            />
+            <img
+              src={photo}
+              alt={name}
+              className="relative w-[140px] h-[140px] rounded-full object-cover border-4 shadow-2xl"
+              style={{ borderColor: colors.primary }}
+            />
+          </div>
+
+          {/* Text Content */}
+          <div className="flex-1 text-center">
+            {/* Name - tipografia display bold */}
             <h1 
-              className="text-[42px] md:text-[52px] font-black text-white mb-4 leading-none tracking-tight"
-              style={{
-                ...typography ? getFontStyle(typography.profileName) : {},
-                textShadow: '0 4px 20px rgba(0,0,0,0.5)'
-              }}
+              className="text-[36px] font-bold text-white mb-3 leading-tight"
+              style={typography ? getFontStyle(typography.profileName) : undefined}
             >
               <span 
                 className="bg-clip-text text-transparent"
                 style={{ 
-                  backgroundImage: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
+                  backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` 
                 }}
               >
                 {name}
               </span>
             </h1>
 
-            {/* Description - Texto grande e legível */}
+            {/* Description - texto maior */}
             <p 
-              className="text-white/90 text-[19px] md:text-[21px] leading-relaxed mb-6 max-w-xl font-medium"
-              style={{
-                ...typography ? getFontStyle(typography.bio) : {},
-                textShadow: '0 2px 10px rgba(0,0,0,0.5)'
-              }}
+              className="text-zinc-300 text-[18px] leading-relaxed mb-6 max-w-2xl mx-auto"
+              style={typography ? getFontStyle(typography.bio) : undefined}
             >
               {description.split(' ').map((word, i) => {
+                // Destaca palavras-chave comuns
                 const keywords = ['profissional', 'especializado', 'expert', 'criador', 'empreendedor'];
                 const isKeyword = keywords.some(k => word.toLowerCase().includes(k));
                 return isKeyword ? (
-                  <span 
-                    key={i} 
-                    className="font-bold"
-                    style={{ color: colors.accent }}
-                  >
-                    {word}{' '}
-                  </span>
+                  <span key={i} style={{ color: colors.primary }} className="font-medium">{word} </span>
                 ) : (
                   <span key={i}>{word} </span>
                 );
               })}
             </p>
 
-            {/* Tags - Pills com backdrop blur */}
+            {/* Tags - pills preenchidas com ícones customizáveis */}
             {config.tags.length > 0 && (
               <div className="flex flex-wrap gap-3 justify-center mb-6">
                 {config.tags.slice(0, 4).map((tag, i) => {
@@ -181,12 +160,17 @@ export const BoldHeader = ({
                   return (
                     <span
                       key={i}
-                      className="px-6 py-3 text-sm font-semibold backdrop-blur-md rounded-full border-2 flex items-center gap-2 transition-all hover:scale-105"
+                      className="px-5 py-2.5 text-sm backdrop-blur-sm rounded-full border flex items-center gap-2 transition-colors"
                       style={{
-                        color: 'white',
-                        backgroundColor: `${colors.primary}40`,
-                        borderColor: `${colors.primary}80`,
-                        boxShadow: `0 4px 20px ${colors.primary}30`
+                        color: colors.accent,
+                        backgroundColor: `${colors.primary}33`,
+                        borderColor: `${colors.primary}4D`,
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = `${colors.primary}4D`;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = `${colors.primary}33`;
                       }}
                     >
                       <IconComponent className="w-4 h-4" />
@@ -197,16 +181,11 @@ export const BoldHeader = ({
               </div>
             )}
 
-            {/* CTA Text - Destaque final */}
+            {/* CTA Text */}
             {ctaText && (
               <p 
-                className="text-white text-[22px] font-bold px-6 py-3 rounded-full backdrop-blur-md"
-                style={{
-                  ...typography ? getFontStyle(typography.cta) : {},
-                  backgroundColor: `${colors.primary}30`,
-                  border: `2px solid ${colors.primary}60`,
-                  textShadow: '0 2px 10px rgba(0,0,0,0.5)'
-                }}
+                className="text-white text-[20px] font-semibold"
+                style={typography ? getFontStyle(typography.cta) : undefined}
               >
                 {ctaText}
               </p>
