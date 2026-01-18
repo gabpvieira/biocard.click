@@ -32,6 +32,12 @@ export const supabaseStorage = {
         tags: page.header_tags || [],
         showActions: page.header_show_actions !== false,
       },
+      themeColors: page.theme_colors || {
+        primary: '#a855f7',
+        accent: '#c084fc',
+        background: '#0a0a0a',
+      },
+      typography: page.typography || undefined,
       cards: (page.cards || [])
         .sort((a: any, b: any) => a.position - b.position)
         .map((card: any) => ({
@@ -75,6 +81,12 @@ export const supabaseStorage = {
         tags: page.header_tags || [],
         showActions: page.header_show_actions !== false,
       },
+      themeColors: page.theme_colors || {
+        primary: '#a855f7',
+        accent: '#c084fc',
+        background: '#0a0a0a',
+      },
+      typography: page.typography || undefined,
       cards: (page.cards || [])
         .sort((a: any, b: any) => a.position - b.position)
         .map((card: any) => ({
@@ -121,6 +133,8 @@ export const supabaseStorage = {
         header_cover_color: page.headerConfig.coverColor,
         header_tags: page.headerConfig.tags,
         header_show_actions: page.headerConfig.showActions,
+        theme_colors: page.themeColors,
+        typography: page.typography,
       };
 
       let pageId: string;
