@@ -37,10 +37,10 @@ export const BoldHeader = ({
   };
 
   return (
-    <header className="relative mb-8 -mx-4 md:mx-0 md:rounded-2xl overflow-hidden">
+    <header className="relative mb-8 md:rounded-2xl overflow-hidden">
       {/* Hero Cover - full width, preenchendo todas as bordas */}
       <div 
-        className="h-[400px] w-[calc(100%+2rem)] md:w-full -mx-4 md:mx-0 relative overflow-hidden"
+        className="h-[400px] w-full relative overflow-hidden"
         style={{
           backgroundColor: config.coverType === 'solid' ? config.coverColor : undefined,
           backgroundImage: config.coverType === 'image' && config.coverImage 
@@ -84,18 +84,19 @@ export const BoldHeader = ({
           </div>
         )}
 
-        {/* Curvatura na parte inferior */}
-        <div className="absolute bottom-0 left-0 right-0 h-24">
+        {/* Curvatura na parte inferior - suavizada para evitar linhas de recorte */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 overflow-hidden">
           <svg
             viewBox="0 0 1440 120"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="w-full h-full"
             preserveAspectRatio="none"
+            style={{ display: 'block' }}
           >
             <path
               d="M0,64 C240,100 480,120 720,120 C960,120 1200,100 1440,64 L1440,120 L0,120 Z"
-              fill="#0a0a0a"
+              style={{ fill: colors.background }}
             />
           </svg>
         </div>
@@ -105,7 +106,7 @@ export const BoldHeader = ({
       <div className="relative -mt-16 px-6">
         <div className="flex flex-col items-center">
           {/* Avatar - grande com borda grossa e glow, sobrepondo a curvatura */}
-          <div className="relative mb-4 shrink-0 z-10">
+          <div className="relative mb-4 shrink-0 z-20">
             <div 
               className="absolute inset-0 blur-xl rounded-full" 
               style={{ backgroundColor: `${colors.primary}4D` }}
@@ -113,8 +114,12 @@ export const BoldHeader = ({
             <img
               src={photo}
               alt={name}
-              className="relative w-[140px] h-[140px] rounded-full object-cover border-4 shadow-2xl"
-              style={{ borderColor: colors.primary }}
+              className="relative w-[140px] h-[140px] rounded-full object-cover shadow-2xl"
+              style={{ 
+                borderColor: colors.primary,
+                borderWidth: '4px',
+                borderStyle: 'solid',
+              }}
             />
           </div>
 
