@@ -91,6 +91,36 @@ All colors MUST be HSL.
     @apply shadow-[0_0_40px_hsl(291_100%_59%_/_0.3)];
   }
   
+  /* Correções para Banner Mobile - Bold Header */
+  .bold-header-banner {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .bold-header-banner img,
+  .bold-header-banner > div {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Garantir que SVG wave não crie gaps */
+  .bold-header-wave {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  @media (max-width: 768px) {
+    .bold-header-container {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+  }
+  
   .card-enter-1 { animation: card-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; }
   .card-enter-2 { animation: card-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; }
   .card-enter-3 { animation: card-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; }

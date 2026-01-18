@@ -128,7 +128,7 @@ const PublicPage = () => {
 
         {/* Links Section */}
         <section
-          className="space-y-4 animate-fade-in"
+          className="space-y-2 animate-fade-in"
           style={{ animationDelay: "0.2s" }}
         >
           {page.cards.map((card, index) => (
@@ -137,7 +137,7 @@ const PublicPage = () => {
               href={card.link}
               target="_blank"
               rel="noopener noreferrer"
-              className={`block link-card rounded-2xl overflow-hidden card-enter-${Math.min(index + 1, 4)}`}
+              className={`block link-card rounded-2xl overflow-hidden card-enter-${Math.min(index + 1, 4)} transition-all duration-300 hover:scale-105 hover:shadow-2xl`}
               aria-label={`Link ${index + 1}`}
             >
               <img src={card.image} alt="" className="w-full h-auto" />

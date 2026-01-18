@@ -37,10 +37,10 @@ export const BoldHeader = ({
   };
 
   return (
-    <header className="relative mb-8 md:rounded-2xl overflow-hidden">
-      {/* Hero Cover - full width, preenchendo todas as bordas */}
+    <header className="relative mb-8 -mx-4 md:mx-0 md:rounded-2xl overflow-visible">
+      {/* Hero Cover - full width no mobile, preenchendo todas as bordas */}
       <div 
-        className="h-[400px] w-full relative overflow-hidden"
+        className="h-[400px] w-screen md:w-full relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] md:ml-0 md:mr-0 md:left-0 md:right-0 overflow-hidden"
         style={{
           backgroundColor: config.coverType === 'solid' ? config.coverColor : undefined,
           backgroundImage: config.coverType === 'image' && config.coverImage 
@@ -84,15 +84,14 @@ export const BoldHeader = ({
           </div>
         )}
 
-        {/* Curvatura na parte inferior - suavizada para evitar linhas de recorte */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 overflow-hidden">
+        {/* Curvatura na parte inferior - alinhada com fundo da página */}
+        <div className="absolute bottom-[-2px] left-0 right-0 h-24 pointer-events-none">
           <svg
             viewBox="0 0 1440 120"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-full"
+            className="w-full h-full block"
             preserveAspectRatio="none"
-            style={{ display: 'block' }}
           >
             <path
               d="M0,64 C240,100 480,120 720,120 C960,120 1200,100 1440,64 L1440,120 L0,120 Z"
