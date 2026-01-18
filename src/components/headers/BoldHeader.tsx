@@ -37,10 +37,10 @@ export const BoldHeader = ({
   };
 
   return (
-    <header className="relative mb-8 -mx-4 md:-mx-0">
+    <header className="relative mb-8 -mx-4 md:mx-0 md:rounded-2xl overflow-hidden">
       {/* Hero Cover - full width, preenchendo todas as bordas */}
       <div 
-        className="h-[400px] w-screen md:w-full relative overflow-hidden"
+        className="h-[400px] w-[calc(100%+2rem)] md:w-full -mx-4 md:mx-0 relative overflow-hidden"
         style={{
           backgroundColor: config.coverType === 'solid' ? config.coverColor : undefined,
           backgroundImage: config.coverType === 'image' && config.coverImage 
