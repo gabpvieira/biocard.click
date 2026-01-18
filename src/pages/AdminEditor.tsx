@@ -7,8 +7,8 @@ import { validatePage, sanitizeSlug, ValidationError } from "@/lib/validation";
 import { validateImage, convertToBase64, generateId } from "@/lib/imageUtils";
 import { HeaderLayoutPreview } from "@/components/HeaderLayoutPreview";
 import { IconPicker, getIconComponent } from "@/components/IconPicker";
-import { ColorPicker } from "@/components/ColorPicker";
-import { TypographyPicker } from "@/components/TypographyPicker";
+import { SimpleColorPicker } from "@/components/SimpleColorPicker";
+import { SimpleFontPicker } from "@/components/SimpleFontPicker";
 import { DEFAULT_TYPOGRAPHY } from "@/lib/typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -694,59 +694,40 @@ const AdminEditor = () => {
               </h2>
             </div>
             <p className="text-sm text-muted-foreground mb-4">
-              Personalize as cores dos destaques, brilhos e fundo da sua página
+              Escolha uma paleta pronta ou personalize manualmente as cores da sua página
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <ColorPicker
-                label="Cor Principal"
-                value={formData.themeColors?.primary || '#a855f7'}
-                onChange={(color) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    themeColors: {
-                      ...prev.themeColors,
-                      primary: color,
-                      accent: prev.themeColors?.accent || '#c084fc',
-                      background: prev.themeColors?.background || '#0a0a0a',
-                    },
-                  }))
-                }
-              />
+            <SimpleColorPicker
+              value={formData.themeColors || {
+                primary: '#a855f7',
+                accent: '#c084fc',
+                background: '#0a0a0a',
+              }}
+              onChange={(themeColors) =>
+                setFormData((prev) => ({ ...prev, themeColors }))
+              }
+              onSave={async () => {
+                // Salva apenas as cores
+                const pageData: BioPage = {
+                  slug: formData.slug!,
+                  name: formData.name!,
+                  photo: formData.photo!,
+                  description: formData.description!,
+                  ctaText: formData.ctaText || "Conheça meus cursos ou entre em contato!",
+                  cards: formData.cards!,
+                  headerConfig: formData.headerConfig!,
+                  themeColors: formData.themeColors,
+                  typography: formData.typography,
+                  createdAt: new Date().toISOString(),
+                  updatedAt: new Date().toISOString(),
+                };
 
-              <ColorPicker
-                label="Cor de Acento"
-                value={formData.themeColors?.accent || '#c084fc'}
-                onChange={(color) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    themeColors: {
-                      ...prev.themeColors,
-                      primary: prev.themeColors?.primary || '#a855f7',
-                      accent: color,
-                      background: prev.themeColors?.background || '#0a0a0a',
-                    },
-                  }))
+                const result = await supabaseStorage.setPage(pageData);
+                if (!result.success) {
+                  throw new Error(result.error || 'Erro ao salvar cores');
                 }
-              />
-
-              <ColorPicker
-                label="Cor de Fundo"
-                value={formData.themeColors?.background || '#0a0a0a'}
-                onChange={(color) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    themeColors: {
-                      ...prev.themeColors,
-                      primary: prev.themeColors?.primary || '#a855f7',
-                      accent: prev.themeColors?.accent || '#c084fc',
-                      background: color,
-                    },
-                  }))
-                }
-                presets={['#0a0a0a', '#1a1a1a', '#000000', '#1e1e1e', '#0f172a', '#1e293b', '#111827', '#1f2937']}
-              />
-            </div>
+              }}
+            />
           </div>
 
           {/* Typography Section */}
@@ -758,14 +739,35 @@ const AdminEditor = () => {
               </h2>
             </div>
             <p className="text-sm text-muted-foreground mb-4">
-              Personalize as fontes de cada seção da sua página para criar uma identidade visual única
+              Escolha um estilo de fonte que combine com sua identidade visual
             </p>
 
-            <TypographyPicker
+            <SimpleFontPicker
               value={formData.typography || DEFAULT_TYPOGRAPHY}
               onChange={(typography) =>
                 setFormData((prev) => ({ ...prev, typography }))
               }
+              onSave={async () => {
+                // Salva apenas a tipografia
+                const pageData: BioPage = {
+                  slug: formData.slug!,
+                  name: formData.name!,
+                  photo: formData.photo!,
+                  description: formData.description!,
+                  ctaText: formData.ctaText || "Conheça meus cursos ou entre em contato!",
+                  cards: formData.cards!,
+                  headerConfig: formData.headerConfig!,
+                  themeColors: formData.themeColors,
+                  typography: formData.typography,
+                  createdAt: new Date().toISOString(),
+                  updatedAt: new Date().toISOString(),
+                };
+
+                const result = await supabaseStorage.setPage(pageData);
+                if (!result.success) {
+                  throw new Error(result.error || 'Erro ao salvar tipografia');
+                }
+              }}
             />
           </div>
 
