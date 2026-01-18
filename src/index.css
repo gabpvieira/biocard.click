@@ -1,6 +1,27 @@
+/* Importação de Fontes Premium */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Lora:wght@400;500;600;700&family=Merriweather:wght@400;700&family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600;700&family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Fontes Premium Customizadas (Clarkson e Nohemi) */
+/* Nota: Estas fontes precisam ser adicionadas manualmente ao projeto ou via CDN */
+@font-face {
+  font-family: 'Clarkson';
+  src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/files/inter-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nohemi';
+  src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/files/inter-latin-500-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
@@ -63,29 +84,7 @@ All colors MUST be HSL.
 
 @layer utilities {
   .link-card {
-    @apply relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_10px_40px_-10px_hsl(291_100%_59%_/_0.5)] active:scale-[0.98];
-  }
-  
-  .link-card::before {
-    content: '';
-    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
-    background: linear-gradient(135deg, hsl(291 100% 59% / 0.15), transparent 60%);
-  }
-  
-  .link-card:hover::before {
-    @apply opacity-100;
-  }
-  
-  .link-card::after {
-    content: '';
-    @apply absolute inset-0 opacity-0 transition-opacity duration-500;
-    background: linear-gradient(90deg, transparent, hsl(291 100% 70% / 0.2), transparent);
-    background-size: 200% 100%;
-    animation: shimmer 2s linear infinite;
-  }
-  
-  .link-card:hover::after {
-    @apply opacity-100;
+    @apply relative overflow-hidden transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98];
   }
   
   .profile-glow {

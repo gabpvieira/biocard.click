@@ -1,7 +1,8 @@
-import { HeaderConfig } from "@/types/page";
+import { HeaderConfig, TypographyConfig } from "@/types/page";
 import { Copy, Share2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { getIconComponent } from "@/components/IconPicker";
+import { getFontStyle } from "@/lib/typography";
 
 interface BoldHeaderProps {
   name: string;
@@ -9,6 +10,7 @@ interface BoldHeaderProps {
   description: string;
   ctaText?: string;
   config: HeaderConfig;
+  typography?: TypographyConfig;
 }
 
 export const BoldHeader = ({
@@ -17,6 +19,7 @@ export const BoldHeader = ({
   description,
   ctaText,
   config,
+  typography,
 }: BoldHeaderProps) => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -112,14 +115,20 @@ export const BoldHeader = ({
           {/* Text Content */}
           <div className="flex-1 text-center">
             {/* Name - tipografia display bold */}
-            <h1 className="text-[36px] font-bold text-white mb-3 leading-tight">
+            <h1 
+              className="text-[36px] font-bold text-white mb-3 leading-tight"
+              style={typography ? getFontStyle(typography.profileName) : undefined}
+            >
               <span className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
                 {name}
               </span>
             </h1>
 
             {/* Description - texto maior */}
-            <p className="text-zinc-300 text-[18px] leading-relaxed mb-6 max-w-2xl mx-auto">
+            <p 
+              className="text-zinc-300 text-[18px] leading-relaxed mb-6 max-w-2xl mx-auto"
+              style={typography ? getFontStyle(typography.bio) : undefined}
+            >
               {description.split(' ').map((word, i) => {
                 // Destaca palavras-chave comuns
                 const keywords = ['profissional', 'especializado', 'expert', 'criador', 'empreendedor'];
@@ -141,6 +150,7 @@ export const BoldHeader = ({
                     <span
                       key={i}
                       className="px-5 py-2.5 text-sm text-purple-200 bg-purple-500/20 backdrop-blur-sm rounded-full border border-purple-500/30 flex items-center gap-2 hover:bg-purple-500/30 transition-colors"
+                      style={typography ? getFontStyle(typography.tags) : undefined}
                     >
                       <IconComponent className="w-4 h-4" />
                       {tag.text}
@@ -152,7 +162,10 @@ export const BoldHeader = ({
 
             {/* CTA Text */}
             {ctaText && (
-              <p className="text-white text-[20px] font-semibold">
+              <p 
+                className="text-white text-[20px] font-semibold"
+                style={typography ? getFontStyle(typography.cta) : undefined}
+              >
                 {ctaText}
               </p>
             )}

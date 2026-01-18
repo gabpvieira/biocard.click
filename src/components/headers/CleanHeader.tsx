@@ -1,7 +1,8 @@
-import { HeaderConfig } from "@/types/page";
+import { HeaderConfig, TypographyConfig } from "@/types/page";
 import { Copy, Share2, Mail } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { getIconComponent } from "@/components/IconPicker";
+import { getFontStyle } from "@/lib/typography";
 
 interface CleanHeaderProps {
   name: string;
@@ -9,6 +10,7 @@ interface CleanHeaderProps {
   description: string;
   ctaText?: string;
   config: HeaderConfig;
+  typography?: TypographyConfig;
 }
 
 export const CleanHeader = ({
@@ -17,6 +19,7 @@ export const CleanHeader = ({
   description,
   ctaText,
   config,
+  typography,
 }: CleanHeaderProps) => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -72,12 +75,18 @@ export const CleanHeader = ({
           </div>
 
           {/* Name */}
-          <h1 className="text-[28px] font-semibold text-white mb-2 text-center tracking-tight">
+          <h1 
+            className="text-[28px] font-semibold text-white mb-2 text-center tracking-tight"
+            style={typography ? getFontStyle(typography.profileName) : undefined}
+          >
             {name}
           </h1>
 
           {/* Description */}
-          <p className="text-zinc-400 text-[16px] leading-relaxed text-center max-w-md mb-4 px-4">
+          <p 
+            className="text-zinc-400 text-[16px] leading-relaxed text-center max-w-md mb-4 px-4"
+            style={typography ? getFontStyle(typography.bio) : undefined}
+          >
             {description}
           </p>
 
@@ -90,6 +99,7 @@ export const CleanHeader = ({
                   <span
                     key={i}
                     className="px-3 py-1 text-xs text-purple-300 border border-purple-500/30 rounded-full flex items-center gap-1.5"
+                    style={typography ? getFontStyle(typography.tags) : undefined}
                   >
                     <IconComponent className="w-3 h-3" />
                     {tag.text}
@@ -128,7 +138,10 @@ export const CleanHeader = ({
 
           {/* CTA Text */}
           {ctaText && (
-            <p className="text-white text-[18px] font-medium text-center mb-2">
+            <p 
+              className="text-white text-[18px] font-medium text-center mb-2"
+              style={typography ? getFontStyle(typography.cta) : undefined}
+            >
               {ctaText}
             </p>
           )}

@@ -7,6 +7,9 @@ import { validatePage, sanitizeSlug, ValidationError } from "@/lib/validation";
 import { validateImage, convertToBase64, generateId } from "@/lib/imageUtils";
 import { HeaderLayoutPreview } from "@/components/HeaderLayoutPreview";
 import { IconPicker, getIconComponent } from "@/components/IconPicker";
+import { ColorPicker } from "@/components/ColorPicker";
+import { TypographyPicker } from "@/components/TypographyPicker";
+import { DEFAULT_TYPOGRAPHY } from "@/lib/typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,6 +25,7 @@ import {
   X,
   Loader2,
   Palette,
+  Type,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
@@ -45,6 +49,12 @@ const AdminEditor = () => {
       tags: [],
       showActions: true,
     },
+    themeColors: {
+      primary: '#a855f7',
+      accent: '#c084fc',
+      background: '#0a0a0a',
+    },
+    typography: DEFAULT_TYPOGRAPHY,
   });
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const [isSaving, setIsSaving] = useState(false);
@@ -673,6 +683,90 @@ const AdminEditor = () => {
                 />
               </button>
             </div>
+          </div>
+
+          {/* Theme Colors Section */}
+          <div className="bg-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-6 space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Palette className="w-5 h-5 text-accent" />
+              <h2 className="font-semibold text-foreground">
+                Cores do Tema
+              </h2>
+            </div>
+            <p className="text-sm text-muted-foreground mb-4">
+              Personalize as cores dos destaques, brilhos e fundo da sua página
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <ColorPicker
+                label="Cor Principal"
+                value={formData.themeColors?.primary || '#a855f7'}
+                onChange={(color) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    themeColors: {
+                      ...prev.themeColors,
+                      primary: color,
+                      accent: prev.themeColors?.accent || '#c084fc',
+                      background: prev.themeColors?.background || '#0a0a0a',
+                    },
+                  }))
+                }
+              />
+
+              <ColorPicker
+                label="Cor de Acento"
+                value={formData.themeColors?.accent || '#c084fc'}
+                onChange={(color) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    themeColors: {
+                      ...prev.themeColors,
+                      primary: prev.themeColors?.primary || '#a855f7',
+                      accent: color,
+                      background: prev.themeColors?.background || '#0a0a0a',
+                    },
+                  }))
+                }
+              />
+
+              <ColorPicker
+                label="Cor de Fundo"
+                value={formData.themeColors?.background || '#0a0a0a'}
+                onChange={(color) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    themeColors: {
+                      ...prev.themeColors,
+                      primary: prev.themeColors?.primary || '#a855f7',
+                      accent: prev.themeColors?.accent || '#c084fc',
+                      background: color,
+                    },
+                  }))
+                }
+                presets={['#0a0a0a', '#1a1a1a', '#000000', '#1e1e1e', '#0f172a', '#1e293b', '#111827', '#1f2937']}
+              />
+            </div>
+          </div>
+
+          {/* Typography Section */}
+          <div className="bg-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-6 space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Type className="w-5 h-5 text-accent" />
+              <h2 className="font-semibold text-foreground">
+                Tipografia
+              </h2>
+            </div>
+            <p className="text-sm text-muted-foreground mb-4">
+              Personalize as fontes de cada seção da sua página para criar uma identidade visual única
+            </p>
+
+            <TypographyPicker
+              value={formData.typography || DEFAULT_TYPOGRAPHY}
+              onChange={(typography) =>
+                setFormData((prev) => ({ ...prev, typography }))
+              }
+            />
           </div>
 
           {/* Cards Section */}

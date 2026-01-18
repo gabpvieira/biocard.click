@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Metadados Dinâmicos - Biocard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        
+        .description {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .test-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .test-section h2 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            color: #555;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .result pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #333;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .success {
+            border-color: #4caf50;
+            background: #f1f8f4;
+        }
+        
+        .error {
+            border-color: #f44336;
+            background: #fef1f0;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .tool-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .tool-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .tool-card h3 {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tool-card a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .status-success {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .status-error {
+            background: #f44336;
+            color: white;
+        }
+        
+        .status-pending {
+            background: #ff9800;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Teste de Metadados Dinâmicos</h1>
+        <p class="description">
+            Use esta ferramenta para testar se os metadados dinâmicos estão funcionando corretamente
+            para cada página de cliente do Biocard.
+        </p>
+
+        <!-- Teste de API -->
+        <div class="test-section">
+            <h2>1. Teste da API</h2>
+            <div class="input-group">
+                <label for="slug">Slug do Cliente:</label>
+                <input type="text" id="slug" placeholder="exemplo: joao-silva" value="">
+            </div>
+            <button onclick="testAPI()">Testar API</button>
+            <button onclick="testAPIAsBot()">Testar como Bot</button>
+            <div id="api-result" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Ferramentas de Validação -->
+        <div class="test-section">
+            <h2>2. Ferramentas de Validação Online</h2>
+            <p style="color: #666; margin-bottom: 1rem;">
+                Clique nos botões abaixo para testar sua URL nas ferramentas oficiais:
+            </p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3>Facebook</h3>
+                    <button onclick="openFacebookDebugger()">Abrir Debugger</button>
+                </div>
+                <div class="tool-card">
+                    <h3>Twitter</h3>
+                    <button onclick="openTwitterValidator()">Abrir Validator</button>
+                </div>
+                <div class="tool-card">
+                    <h3>LinkedIn</h3>
+                    <button onclick="openLinkedInInspector()">Abrir Inspector</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checklist de Validação -->
+        <div class="test-section">
+            <h2>3. Checklist de Validação</h2>
+            <div style="margin-top: 1rem;">
+                <label style="display: flex; align-items: center; margin-bottom: 0.75rem; cursor: pointer;">
+                    <input type="checkbox" style="width: auto; margin-right: 0.5rem;">
+                    <span>API retorna HTML com metadados corretos</span>
+                </label>
+                <label style="display: flex; align-items: center; margin-bottom: 0.75rem; cursor: pointer;">
+                    <input type="checkbox" style="width: auto; margin-right: 0.5rem;">
+                    <span>Facebook Sharing Debugger mostra preview</span>
+                </label>
+                <label style="display: flex; align-items: center; margin-bottom: 0.75rem; cursor: pointer;">
+                    <input type="checkbox" style="width: auto; margin-right: 0.5rem;">
+                    <span>Twitter Card Validator mostra preview</span>
+                </label>
+                <label style="display: flex; align-items: center; margin-bottom: 0.75rem; cursor: pointer;">
+                    <input type="checkbox" style="width: auto; margin-right: 0.5rem;">
+                    <span>LinkedIn Post Inspector mostra preview</span>
+                </label>
+                <label style="display: flex; align-items: center; margin-bottom: 0.75rem; cursor: pointer;">
+                    <input type="checkbox" style="width: auto; margin-right: 0.5rem;">
+                    <span>WhatsApp mostra preview ao compartilhar</span>
+                </label>
+                <label style="display: flex; align-items: center; margin-bottom: 0.75rem; cursor: pointer;">
+                    <input type="checkbox" style="width: auto; margin-right: 0.5rem;">
+                    <span>Imagens carregam corretamente</span>
+                </label>
+                <label style="display: flex; align-items: center; margin-bottom: 0.75rem; cursor: pointer;">
+                    <input type="checkbox" style="width: auto; margin-right: 0.5rem;">
+                    <span>Título e descrição aparecem sem erros</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = window.location.origin;
+
+        async function testAPI() {
+            const slug = document.getElementById('slug').value.trim();
+            const resultDiv = document.getElementById('api-result');
+            
+            if (!slug) {
+                alert('Por favor, insira um slug');
+                return;
+            }
+
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = '<div class="loading"></div> Testando...';
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/og?slug=${slug}`);
+                const html = await response.text();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    
+                    // Extract meta tags
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const title = doc.querySelector('title')?.textContent || 'N/A';
+                    const ogTitle = doc.querySelector('meta[property="og:title"]')?.content || 'N/A';
+                    const ogDescription = doc.querySelector('meta[property="og:description"]')?.content || 'N/A';
+                    const ogImage = doc.querySelector('meta[property="og:image"]')?.content || 'N/A';
+                    
+                    resultDiv.innerHTML = `
+                        <h3 style="color: #4caf50; margin-bottom: 1rem;">✅ Sucesso!</h3>
+                        <pre><strong>Title:</strong> ${title}
+
+<strong>OG Title:</strong> ${ogTitle}
+
+<strong>OG Description:</strong> ${ogDescription}
+
+<strong>OG Image:</strong> ${ogImage}
+
+<strong>Status:</strong> ${response.status} ${response.statusText}</pre>
+                    `;
+                } else {
+                    throw new Error(`${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h3 style="color: #f44336; margin-bottom: 1rem;">❌ Erro</h3>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+
+        async function testAPIAsBot() {
+            const slug = document.getElementById('slug').value.trim();
+            const resultDiv = document.getElementById('api-result');
+            
+            if (!slug) {
+                alert('Por favor, insira um slug');
+                return;
+            }
+
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = '<div class="loading"></div> Testando como bot...';
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/og?slug=${slug}`, {
+                    headers: {
+                        'User-Agent': 'facebookexternalhit/1.1'
+                    }
+                });
+                const html = await response.text();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <h3 style="color: #4caf50; margin-bottom: 1rem;">✅ Resposta do Bot</h3>
+                        <pre>${html.substring(0, 1000)}...</pre>
+                    `;
+                } else {
+                    throw new Error(`${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h3 style="color: #f44336; margin-bottom: 1rem;">❌ Erro</h3>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+
+        function openFacebookDebugger() {
+            const slug = document.getElementById('slug').value.trim();
+            const url = slug ? `${BASE_URL}/${slug}` : BASE_URL;
+            window.open(`https://developers.facebook.com/tools/debug/?q=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function openTwitterValidator() {
+            const slug = document.getElementById('slug').value.trim();
+            const url = slug ? `${BASE_URL}/${slug}` : BASE_URL;
+            window.open(`https://cards-dev.twitter.com/validator?url=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function openLinkedInInspector() {
+            const slug = document.getElementById('slug').value.trim();
+            const url = slug ? `${BASE_URL}/${slug}` : BASE_URL;
+            window.open(`https://www.linkedin.com/post-inspector/inspect/${encodeURIComponent(url)}`, '_blank');
+        }
+    </script>
+</body>
+</html>

@@ -1,7 +1,8 @@
-import { HeaderConfig } from "@/types/page";
+import { HeaderConfig, TypographyConfig } from "@/types/page";
 import { Copy, Share2, Mail } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { getIconComponent } from "@/components/IconPicker";
+import { getFontStyle } from "@/lib/typography";
 
 interface MinimalHeaderProps {
   name: string;
@@ -9,6 +10,7 @@ interface MinimalHeaderProps {
   description: string;
   ctaText?: string;
   config: HeaderConfig;
+  typography?: TypographyConfig;
 }
 
 export const MinimalHeader = ({
@@ -17,6 +19,7 @@ export const MinimalHeader = ({
   description,
   ctaText,
   config,
+  typography,
 }: MinimalHeaderProps) => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -51,18 +54,27 @@ export const MinimalHeader = ({
         {/* Text Content - densidade alta */}
         <div className="flex-1 min-w-0">
           {/* Name - tipografia mono/condensada */}
-          <h1 className="text-[24px] font-semibold text-white mb-1 tracking-tight uppercase">
+          <h1 
+            className="text-[24px] font-semibold text-white mb-1 tracking-tight uppercase"
+            style={typography ? getFontStyle(typography.profileName) : undefined}
+          >
             {name}
           </h1>
 
           {/* Description - 1 linha única */}
-          <p className="text-zinc-500 text-[14px] truncate mb-2">
+          <p 
+            className="text-zinc-500 text-[14px] truncate mb-2"
+            style={typography ? getFontStyle(typography.bio) : undefined}
+          >
             {description}
           </p>
 
           {/* Tags - inline com separadores */}
           {config.tags.length > 0 && (
-            <div className="text-purple-400 text-xs font-mono flex items-center gap-2">
+            <div 
+              className="text-purple-400 text-xs font-mono flex items-center gap-2"
+              style={typography ? getFontStyle(typography.tags) : undefined}
+            >
               {config.tags.map((tag, i) => {
                 const IconComponent = getIconComponent(tag.icon);
                 return (
@@ -107,7 +119,10 @@ export const MinimalHeader = ({
 
       {/* CTA Text - minimalista */}
       {ctaText && (
-        <p className="text-zinc-400 text-sm mt-4 font-mono">
+        <p 
+          className="text-zinc-400 text-sm mt-4 font-mono"
+          style={typography ? getFontStyle(typography.cta) : undefined}
+        >
           → {ctaText}
         </p>
       )}

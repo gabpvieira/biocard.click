@@ -1,186 +1,191 @@
-# 🎨 Biocard.click
+# 🎴 Biocard - Link na Bio Premium
 
-> Plataforma de bio link moderna e elegante com integração Supabase
+> Plataforma premium para criação de páginas de links personalizadas com design sofisticado
 
-[![GitHub](https://img.shields.io/badge/GitHub-biocard.click-blue?logo=github)](https://github.com/gabpvieira/biocard.click)
-[![Supabase](https://img.shields.io/badge/Supabase-Integrated-green?logo=supabase)](https://supabase.com)
-[![React](https://img.shields.io/badge/React-18.3-blue?logo=react)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue?logo=typescript)](https://www.typescriptlang.org)
+## 🚀 Sobre o Projeto
 
-## 📖 Sobre
+Biocard é uma plataforma SaaS que permite criar páginas de links personalizadas (link in bio) com design premium, múltiplos layouts de header e metadados dinâmicos para compartilhamento em redes sociais.
 
-Biocard.click é uma plataforma completa para criar páginas de bio link personalizadas. Perfeita para profissionais, criadores de conteúdo e empresas que desejam centralizar seus links em uma landing page elegante.
+## ✨ Principais Features
 
-### ✨ Funcionalidades
+- ✅ **Múltiplos Layouts de Header**: Bold, Clean e Minimal
+- ✅ **Metadados Dinâmicos**: Preview personalizado em todas as redes sociais
+- ✅ **Editor Visual**: Interface intuitiva para personalização
+- ✅ **Supabase Backend**: Banco de dados e storage integrados
+- ✅ **Deploy Vercel**: Hospedagem otimizada e serverless functions
+- ✅ **Responsive**: Design adaptável para todos os dispositivos
 
-- 🎨 **Design Moderno**: Interface limpa e responsiva com Tailwind CSS
-- 🔐 **Autenticação Segura**: Sistema de login com Supabase Auth
-- 📝 **Editor Visual**: Crie e edite páginas facilmente
-- 🖼️ **Upload de Imagens**: Armazenamento seguro no Supabase Storage (até 10MB)
-- 🔗 **Links Ilimitados**: Adicione quantos cards/links precisar
-- 📱 **Totalmente Responsivo**: Funciona perfeitamente em todos os dispositivos
-- ⚡ **Performance**: Construído com Vite para velocidade máxima
-- 🎯 **SEO Friendly**: URLs amigáveis com slugs personalizados
+## 🛠️ Tecnologias
 
-## 🚀 Tecnologias
-
-- **Frontend**: React 18 + TypeScript
-- **Styling**: Tailwind CSS + shadcn/ui
-- **Backend**: Supabase (PostgreSQL + Auth + Storage)
-- **Build**: Vite
-- **Routing**: React Router v6
+- **Frontend**: React 18 + TypeScript + Vite
+- **UI**: Shadcn/ui + Tailwind CSS
+- **Backend**: Supabase (PostgreSQL + Storage)
+- **Deploy**: Vercel (Serverless Functions)
+- **Roteamento**: React Router v6
 
 ## 📦 Instalação
 
-### Pré-requisitos
-
-- Node.js 18+ 
-- npm ou yarn
-- Conta no Supabase
-
-### Passo a Passo
-
-1. **Clone o repositório**
 ```bash
-git clone https://github.com/gabpvieira/biocard.click.git
-cd biocard.click
-```
-
-2. **Instale as dependências**
-```bash
+# Instalar dependências
 npm install
-```
 
-3. **Configure as variáveis de ambiente**
+# Configurar variáveis de ambiente
+cp .env.example .env
+# Edite .env com suas credenciais do Supabase
 
-Crie um arquivo `.env` na raiz do projeto:
-
-```env
-VITE_SUPABASE_URL=sua-url-do-supabase
-VITE_SUPABASE_ANON_KEY=sua-chave-anon
-```
-
-> 📝 Consulte `SUPABASE_SETUP.md` para instruções detalhadas
-
-4. **Execute o projeto**
-```bash
+# Iniciar desenvolvimento
 npm run dev
 ```
 
-Acesse: http://localhost:5173
+## 🔧 Configuração
 
-## 🗄️ Estrutura do Banco de Dados
+### Variáveis de Ambiente
 
-### Tabelas
+```env
+VITE_SUPABASE_URL=sua_url_supabase
+VITE_SUPABASE_ANON_KEY=sua_chave_anonima
+```
 
-- **bio_pages**: Páginas de bio link
-- **page_cards**: Cards/links das páginas
-- **admins**: Administradores do sistema
+Consulte [`docs/ENV_VARIABLES.md`](./docs/ENV_VARIABLES.md) para mais detalhes.
 
-### Storage
+### Supabase Setup
 
-- **bio-images**: Bucket para imagens (10MB max)
+Execute os scripts SQL na seguinte ordem:
+1. `supabase-setup.sql` - Estrutura básica
+2. `supabase-header-layouts-v2.sql` - Layouts de header
 
-### Segurança
-
-- ✅ Row Level Security (RLS) habilitado
-- ✅ Políticas de acesso configuradas
-- ✅ Leitura pública, escrita apenas para admins
+Consulte [`docs/SUPABASE_SETUP.md`](./docs/SUPABASE_SETUP.md) para instruções completas.
 
 ## 📚 Documentação
 
-- [SUPABASE_SETUP.md](SUPABASE_SETUP.md) - Guia de configuração do Supabase
-- [INTEGRACAO_COMPLETA.md](INTEGRACAO_COMPLETA.md) - Documentação técnica completa
-- [CHECKLIST.md](CHECKLIST.md) - Checklist de configuração
-- [supabase-setup.sql](supabase-setup.sql) - Script SQL de verificação
+Toda a documentação está organizada na pasta [`/docs`](./docs/):
 
-## 🔐 Primeiro Acesso
+### 🎯 Início Rápido
+- [`docs/README_METADADOS.md`](./docs/README_METADADOS.md) - Visão geral de metadados dinâmicos
+- [`docs/SUPABASE_SETUP.md`](./docs/SUPABASE_SETUP.md) - Configuração do Supabase
+- [`docs/TESTE_RAPIDO.md`](./docs/TESTE_RAPIDO.md) - Teste rápido do sistema
 
-### Criar Administrador
+### 🔧 Implementação
+- [`docs/METADADOS_DINAMICOS.md`](./docs/METADADOS_DINAMICOS.md) - Documentação técnica de metadados
+- [`docs/IMPLEMENTACAO_HEADERS_COMPLETA.md`](./docs/IMPLEMENTACAO_HEADERS_COMPLETA.md) - Sistema de headers
+- [`docs/INTEGRACAO_COMPLETA.md`](./docs/INTEGRACAO_COMPLETA.md) - Integração completa
 
-1. Crie um usuário no Supabase Auth (Dashboard → Authentication → Users)
-2. Execute no SQL Editor:
+### 🚀 Deploy
+- [`docs/DEPLOY_METADADOS.md`](./docs/DEPLOY_METADADOS.md) - Deploy de metadados
+- [`docs/VERCEL_DEPLOY.md`](./docs/VERCEL_DEPLOY.md) - Deploy no Vercel
 
-```sql
-INSERT INTO admins (id, email)
-SELECT id, email
-FROM auth.users
-WHERE email = 'seu@email.com';
-```
+### 📖 Guias
+- [`docs/HEADER_LAYOUTS_GUIDE.md`](./docs/HEADER_LAYOUTS_GUIDE.md) - Guia de layouts
+- [`docs/GUIA_VISUAL_VALIDACAO.md`](./docs/GUIA_VISUAL_VALIDACAO.md) - Validação visual
+- [`docs/COMANDOS_UTEIS.md`](./docs/COMANDOS_UTEIS.md) - Comandos úteis
 
-3. Acesse `/admin` e faça login
+### ❓ Suporte
+- [`docs/FAQ_METADADOS.md`](./docs/FAQ_METADADOS.md) - Perguntas frequentes
+- [`docs/INDICE_METADADOS.md`](./docs/INDICE_METADADOS.md) - Índice completo
 
-## 🛠️ Scripts Disponíveis
+## 🧪 Testes
 
+### Testar Metadados Localmente
 ```bash
-npm run dev          # Inicia servidor de desenvolvimento
-npm run build        # Build para produção
-npm run preview      # Preview do build
-npm run lint         # Executa o linter
+npm run test:og seu-slug
 ```
 
-## 📁 Estrutura do Projeto
+### Interface de Teste
+Abra `test-og.html` no navegador para testar metadados visualmente.
+
+## 🏗️ Estrutura do Projeto
 
 ```
 biocard.click/
+├── api/                    # Serverless Functions (Vercel)
+│   └── og.ts              # API de metadados dinâmicos
+├── docs/                   # 📚 Documentação completa
+├── public/                 # Assets estáticos
 ├── src/
-│   ├── components/     # Componentes UI (shadcn/ui)
-│   ├── contexts/       # Contextos React (Auth)
-│   ├── lib/           # Utilitários e configurações
-│   │   ├── supabase.ts        # Cliente Supabase
-│   │   ├── supabaseStorage.ts # Funções CRUD
-│   │   └── ...
-│   ├── pages/         # Páginas da aplicação
-│   └── types/         # Tipos TypeScript
-├── public/            # Assets estáticos
-└── ...
+│   ├── components/        # Componentes React
+│   │   ├── headers/      # Componentes de header
+│   │   └── ui/           # Componentes UI (shadcn)
+│   ├── contexts/         # Contextos React
+│   ├── hooks/            # Custom hooks
+│   ├── lib/              # Utilitários
+│   ├── pages/            # Páginas da aplicação
+│   └── types/            # TypeScript types
+├── test-og.html          # Interface de teste
+├── test-local.js         # Script de teste local
+└── vercel.json           # Configuração Vercel
 ```
 
-## 🎨 Páginas
+## 🎨 Layouts Disponíveis
 
-- `/` - Página inicial (em branco)
-- `/:slug` - Página pública de bio link
-- `/admin` - Login administrativo
-- `/admin/dashboard` - Dashboard de gerenciamento
-- `/admin/editor` - Editor de páginas
-- `/admin/editor/:slug` - Editar página existente
+### Bold Header
+Header impactante com capa grande e foto centralizada.
 
-## 🔒 Segurança
+### Clean Header
+Design minimalista e elegante com foco no conteúdo.
 
-- Autenticação via Supabase Auth
-- Row Level Security (RLS) em todas as tabelas
-- Validação de dados no frontend e backend
-- Upload de imagens com limite de tamanho e tipo
-- Variáveis de ambiente não commitadas
+### Minimal Header
+Layout compacto e discreto para máxima simplicidade.
+
+Consulte [`docs/HEADER_LAYOUTS_GUIDE.md`](./docs/HEADER_LAYOUTS_GUIDE.md) para exemplos visuais.
+
+## 🌐 Metadados Dinâmicos
+
+Cada página de cliente gera metadados personalizados para redes sociais:
+- ✅ WhatsApp
+- ✅ Facebook
+- ✅ Instagram
+- ✅ LinkedIn
+- ✅ Twitter/X
+- ✅ Telegram
+- ✅ Discord
+
+Consulte [`docs/METADADOS_DINAMICOS.md`](./docs/METADADOS_DINAMICOS.md) para detalhes técnicos.
+
+## 📊 Scripts Disponíveis
+
+```bash
+npm run dev          # Iniciar servidor de desenvolvimento
+npm run build        # Build para produção
+npm run preview      # Preview do build
+npm run lint         # Verificar código
+npm run test:og      # Testar metadados localmente
+```
+
+## 🔐 Credenciais Admin
+
+Consulte [`docs/CREDENCIAIS_ADMIN.md`](./docs/CREDENCIAIS_ADMIN.md) para informações de acesso ao painel administrativo.
+
+## 🚀 Deploy
+
+### Vercel (Recomendado)
+
+1. Conecte seu repositório ao Vercel
+2. Configure as variáveis de ambiente
+3. Deploy automático a cada push
+
+Consulte [`docs/VERCEL_DEPLOY.md`](./docs/VERCEL_DEPLOY.md) para instruções detalhadas.
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas! Sinta-se à vontade para:
-
 1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
-4. Push para a branch (`git push origin feature/MinhaFeature`)
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
 ## 📝 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto é proprietário e confidencial.
 
-## 👤 Autor
+## 📞 Suporte
 
-**Gabriel Vieira**
-- GitHub: [@gabpvieira](https://github.com/gabpvieira)
-
-## 🙏 Agradecimentos
-
-- [Supabase](https://supabase.com) - Backend as a Service
-- [shadcn/ui](https://ui.shadcn.com) - Componentes UI
-- [Tailwind CSS](https://tailwindcss.com) - Framework CSS
-- [Vite](https://vitejs.dev) - Build tool
+Para dúvidas e suporte:
+- Consulte a documentação em [`/docs`](./docs/)
+- Verifique o [`docs/FAQ_METADADOS.md`](./docs/FAQ_METADADOS.md)
+- Use o [`docs/INDICE_METADADOS.md`](./docs/INDICE_METADADOS.md) para navegação
 
 ---
 
-⭐ Se este projeto foi útil, considere dar uma estrela!
-
-**Status:** ✅ Em desenvolvimento ativo
+**Versão**: 1.0.0  
+**Última atualização**: Janeiro 2026  
+**Status**: ✅ Em Produção

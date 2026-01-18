@@ -4,6 +4,17 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/:slug",
+      "destination": "/api/og?slug=:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(bot|crawler|spider|facebookexternalhit|Facebot|WhatsApp|Twitterbot|LinkedInBot|Slackbot|TelegramBot|Discordbot|SkypeUriPreview|Pinterest|Googlebot).*"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

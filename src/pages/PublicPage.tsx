@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabaseStorage } from "@/lib/supabaseStorage";
 import { BioPage } from "@/types/page";
 import { CleanHeader, BoldHeader, MinimalHeader } from "@/components/headers";
+import { TypographyProvider } from "@/components/TypographyProvider";
+import { DEFAULT_TYPOGRAPHY, getFontStyle } from "@/lib/typography";
 import { ChevronDown } from "lucide-react";
 import { useMetaTags } from "@/hooks/useMetaTags";
 
@@ -48,13 +50,39 @@ const PublicPage = () => {
     return null;
   }
 
+  // Cores padrão (roxo)
+  const defaultColors = {
+    primary: '#a855f7',
+    accent: '#c084fc',
+    background: '#0a0a0a'
+  };
+
+  const colors = page.themeColors || defaultColors;
+  const typography = page.typography || DEFAULT_TYPOGRAPHY;
+
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Decorative background glows */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-accent/20 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute top-1/4 right-0 w-64 h-64 bg-accent/15 rounded-full blur-[100px] translate-x-1/3"></div>
-      <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-accent/10 rounded-full blur-[130px] translate-y-1/2"></div>
-      <div className="absolute bottom-1/3 right-0 w-56 h-56 bg-primary/15 rounded-full blur-[90px] translate-x-1/4"></div>
+    <TypographyProvider typography={typography}>
+      <div 
+        className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+        style={{ backgroundColor: colors.background }}
+      >
+      {/* Decorative background glows com cores personalizadas */}
+      <div 
+        className="absolute top-0 left-0 w-72 h-72 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2"
+        style={{ backgroundColor: `${colors.accent}33` }}
+      ></div>
+      <div 
+        className="absolute top-1/4 right-0 w-64 h-64 rounded-full blur-[100px] translate-x-1/3"
+        style={{ backgroundColor: `${colors.accent}26` }}
+      ></div>
+      <div 
+        className="absolute bottom-0 left-1/4 w-80 h-80 rounded-full blur-[130px] translate-y-1/2"
+        style={{ backgroundColor: `${colors.accent}1a` }}
+      ></div>
+      <div 
+        className="absolute bottom-1/3 right-0 w-56 h-56 rounded-full blur-[90px] translate-x-1/4"
+        style={{ backgroundColor: `${colors.primary}26` }}
+      ></div>
 
       <main className="w-full max-w-md mx-auto relative z-10">
         {/* Header dinâmico baseado no layout escolhido */}
@@ -65,6 +93,7 @@ const PublicPage = () => {
             description={page.description}
             ctaText={page.ctaText}
             config={page.headerConfig}
+            typography={typography}
           />
         )}
         {(!page.headerConfig || page.headerConfig.layout === 'bold') && (
@@ -80,6 +109,7 @@ const PublicPage = () => {
               tags: [],
               showActions: true,
             }}
+            typography={typography}
           />
         )}
         {page.headerConfig?.layout === 'minimal' && (
@@ -89,6 +119,7 @@ const PublicPage = () => {
             description={page.description}
             ctaText={page.ctaText}
             config={page.headerConfig}
+            typography={typography}
           />
         )}
 
@@ -112,11 +143,15 @@ const PublicPage = () => {
         </section>
 
         {/* Footer */}
-        <footer className="text-center mt-8 text-muted-foreground text-xs">
+        <footer 
+          className="text-center mt-8 text-muted-foreground text-xs"
+          style={getFontStyle(typography.footer)}
+        >
           © {new Date().getFullYear()} {page.name} - Todos os direitos reservados
         </footer>
       </main>
     </div>
+    </TypographyProvider>
   );
 };
 
